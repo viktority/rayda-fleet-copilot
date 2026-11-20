@@ -46,6 +46,11 @@ def main():
             )
     serve = sub.add_parser("serve", help="Start authenticated local HTTP API")
     serve.add_argument("--port", type=int, default=8000)
+    ui = sub.add_parser("ui", help="Open the local frontend with a single-company session")
+    ui.add_argument("--company", default="acme-001")
+    ui.add_argument("--role", choices=["viewer", "operator", "admin"], default="admin")
+    ui.add_argument("--port", type=int, default=8000)
+    ui.add_argument("--no-open", action="store_true", help="Start without opening the default browser")
     evaluate = sub.add_parser("eval", help="Run deterministic evaluation corpus or opt-in model evaluations")
     evaluate.add_argument(
         "--live", action="store_true", help="Uses the configured OpenAI model and incurs API usage"
@@ -53,6 +58,11 @@ def main():
     evaluate.add_argument("--output", default="reports/evaluation-latest.json")
     args = parser.parse_args()
     try:
+        if args.command == "ui":
+            from .ui import launch
+
+            launch(args.company, args.role, args.port, open_browser=not args.no_open)
+            return
         if args.command == "serve":
             import uvicorn
 

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rayda · Fleet Copilot</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <script type="module" src="/assets/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="header">
+      <div class="brand">
+        <span class="wordmark">rayda</span
+        ><span class="product">Fleet Copilot</span>
+      </div>
+      <div class="identity" id="identity" hidden>
+        <strong id="company"></strong><span id="role"></span
+        ><button id="disconnect" class="button quiet">Disconnect</button>
+      </div>
+    </header>
+    <div class="shell">
+      <aside class="sidebar">
+        <nav aria-label="Main navigation">
+          <button
+            class="nav-item selected"
+            data-page="copilot"
+            aria-current="page"
+          >
+            Copilot
+          </button>
+          <button class="nav-item" data-page="reviews">
+            Action reviews<span id="pending-count" class="count" hidden></span>
+          </button>
+        </nav>
+        <p class="simulation">Actions are simulated</p>
+      </aside>
+      <main id="main" tabindex="-1">
+        <section id="connect-screen" class="connect-screen">
+          <h1>Your fleet, explained.</h1>
+          <p class="subtitle">
+            Ask a question. Check the evidence. Decide what happens next.
+          </p>
+          <form id="connect-form" class="connect-panel">
+            <h2>Connect to your workspace</h2>
+            <p>
+              Use <code>uv run fleet ui</code> to open a connected local
+              session, or enter a Fleet access token below.
+            </p>
+            <label for="access-token">Fleet access token</label>
+            <input
+              id="access-token"
+              name="access-token"
+              type="password"
+              autocomplete="off"
+              required
+              placeholder="Your workspace access token"
+            />
+            <p class="hint">
+              This is your Fleet credential, not your OpenAI API key.
+            </p>
+            <button class="button primary" id="connect-submit">Connect</button>
+            <p id="connect-error" class="error" role="alert" hidden></p>
+          </form>
+        </section>
+        <div id="workspace" hidden>
+          <section id="copilot-page">
+            <h1>Your fleet, explained.</h1>
+            <p class="subtitle">
+              Ask a question. Check the evidence. Decide what happens next.
+            </p>
+            <div class="context">
+              <span id="device-count"></span><span id="observation-date"></span>
+            </div>
+            <form id="question-form" class="composer">
+              <label for="question">Ask about your fleet</label>
+              <textarea
+                id="question"
+                name="question"
+                maxlength="4000"
+                rows="3"
+                required
+                placeholder="Which devices are low on disk space?"
+              ></textarea>
+              <div class="composer-footer">
+                <label class="checkbox"
+                  ><input id="allow-proposals" type="checkbox" />Allow action
+                  proposals</label
+                >
+                <button id="ask-submit" class="button primary">
+                  Ask copilot<svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12h15M13 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <div class="suggestions" aria-label="Example questions">
+              <button
+                class="button"
+                data-question="Which devices have less than 10% free disk space?"
+              >
+                Low disk space
+              </button>
+              <button
+                class="button"
+                data-question="Which laptops fail high-severity compliance checks?"
+              >
+                Compliance checks
+              </button>
+              <button
+                class="button"
+                data-question="Which devices consistently use over 85% RAM on at least 80% of days, with at least 7 observations?"
+              >
+                Memory trends
+              </button>
+            </div>
+            <p id="ask-error" class="error" role="alert" hidden></p>
+            <div id="loading" class="loading" role="status" hidden>
+              <span class="spinner"></span>
+              <div>
+                <strong>Checking your fleet…</strong>
+                <p>
+                  The copilot is gathering and verifying telemetry evidence.
+                </p>
+              </div>
+            </div>
+            <section id="answer" class="answer" aria-live="polite">
+              <div class="section-title">
+                <h2>Answer</h2>
+                <span>Based on recorded telemetry</span>
+              </div>
+              <div id="answer-content">
+                <p class="empty">
+                  Ask a question or choose an example to get started.
+                </p>
+              </div>
+            </section>
+          </section>
+          <section id="reviews-page" hidden>
+            <div class="page-title">
+              <div>
+                <h1>Action reviews</h1>
+                <p class="subtitle">Review the evidence before you decide.</p>
+              </div>
+              <button id="refresh-reviews" class="button">Refresh</button>
+            </div>
+            <p class="review-note">
+              Approved actions are recorded as simulations. No messages are sent
+              and no devices are changed.
+            </p>
+            <p id="review-error" class="error" role="alert" hidden></p>
+            <div id="reviews-list" aria-live="polite"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <dialog id="decision-dialog" aria-labelledby="decision-title">
+      <form id="decision-form">
+        <h2 id="decision-title"></h2>
+        <p id="decision-summary"></p>
+        <div id="decision-details" class="decision-details"></div>
+        <p class="hint">
+          This decision applies only to the exact proposal shown here.
+        </p>
+        <p id="decision-error" class="error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button type="button" id="cancel-decision" class="button">
+            Cancel</button
+          ><button id="confirm-decision" class="button primary">Confirm</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

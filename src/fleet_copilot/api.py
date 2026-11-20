@@ -3,11 +3,13 @@
 import json
 import os
 import secrets
+from pathlib import Path
 from typing import Callable
 
 from fastapi import Depends, FastAPI, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.staticfiles import StaticFiles
 from pydantic import Field
 
 from .actions import Actions, Decision
@@ -36,6 +38,26 @@ def create_app(store: Store, tokens: dict[str, Principal], model_factory: Callab
     )
     bearer = HTTPBearer(auto_error=False)
     actions = Actions(store, Analytics(store))
+    web = Path(__file__).with_name("web")
+    app.mount("/assets", StaticFiles(directory=web), name="assets")
+
+    @app.middleware("http")
+    async def browser_headers(request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Referrer-Policy"] = "no-referrer"
+        response.headers["Cache-Control"] = "no-store"
+        if request.url.path == "/" or request.url.path.startswith("/assets/"):
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'self'; script-src 'self'; style-src 'self'; "
+                "img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; "
+                "base-uri 'none'; form-action 'self'"
+            )
+        return response
+
+    @app.get("/", include_in_schema=False)
+    def frontend():
+        return FileResponse(web / "index.html")
 
     def authenticate(credentials: HTTPAuthorizationCredentials | None = Depends(bearer)):
         if credentials and credentials.scheme.casefold() == "bearer":
@@ -55,6 +77,21 @@ def create_app(store: Store, tokens: dict[str, Principal], model_factory: Callab
     @app.post("/v1/ask")
     def ask(body: Ask, principal: Principal = Depends(authenticate)):
         return FleetAgent(store, model_factory()).ask(principal, body.question, body.allow_proposals)
+
+    @app.get("/v1/context")
+    def context(principal: Principal = Depends(authenticate)):
+        rows = store.rows(principal)
+        return {
+            "company_id": principal.company_id,
+            "company_name": {"acme-001": "Acme", "globex-002": "Globex", "initech-003": "Initech"}.get(
+                principal.company_id, principal.company_id
+            ),
+            "actor_id": principal.actor_id,
+            "role": principal.role,
+            "devices": len({r["device_id"] for r in rows}),
+            "latest_observation": max(r["collected_at"] for r in rows),
+            "action_mode": "simulation",
+        }
 
     @app.get("/v1/runs/{run_id}")
     def run(run_id: str, principal: Principal = Depends(authenticate)):
