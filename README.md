@@ -4,7 +4,7 @@ A runnable LangGraph agent for the supplied fleet telemetry assessment. It answe
 
 **Deployed demo:** [fleet-demo.dexspaceltd.com](https://fleet-demo.dexspaceltd.com/). A Fleet access token is supplied separately to reviewers. Paste that token into the connection screen; never enter an OpenAI API key there. The demo opens an Acme-scoped administrator session for reviewing simulated actions.
 
-![Fleet Copilot answering a question with source evidence](docs/design/frontend-desktop.jpg)
+![Fleet Copilot answering a question with source evidence](docs/screenshots/desktop.jpg)
 
 ## Reviewer guide
 
@@ -212,13 +212,25 @@ uv run fleet eval --output runtime/evaluation-offline.json
 uv run fleet eval --live --output runtime/evaluation-live.json
 ```
 
-Verified during development: **39 tests passing**, **14/14 offline cases**, and **14/14 live cases** using the recorded model configuration. See the saved [offline report](reports/evaluation-offline.json), [live report](reports/evaluation-live.json), and [browser verification](docs/design/frontend-qa.md). These are observed results, not guarantees of future model behavior. New runs write to ignored `runtime/` paths so the original report evidence stays intact. GitHub Actions runs lint, formatting, tests and the offline corpus on pushes and pull requests; no provider key is required in CI.
+Verified during development: **39 tests passing**, **14/14 offline cases**, and **14/14 live cases** using the recorded model configuration. See the saved [offline report](reports/evaluation-offline.json), [live report](reports/evaluation-live.json), and the [browser checks](#browser-verification) below. These are observed results, not guarantees of future model behavior. New runs write to ignored `runtime/` paths so the original report evidence stays intact. GitHub Actions runs lint, formatting, tests and the offline corpus on pushes and pull requests; no provider key is required in CI.
 
 Offline evaluation uses a **routing oracle** to exercise the actual LangGraph loop, tools, citations and proposal policy on a fixed 14-case corpus. It is deterministic and needs no provider key. It does not measure natural-language understanding. Live evaluation sends the same questions to the configured OpenAI model, then checks expected device sets/counts, status, tenant isolation, citation resolution, canonical answer rendering, proposal counts and the absence of effects without approval. Live evaluation incurs API usage and is not perfectly deterministic.
 
 The test suite also covers historical vs latest counts, threshold boundaries, missing telemetry, version filtering, data-ingestion rollback, deliberately colliding tenant/device IDs, fabricated citations, unexposed execution tools, authenticated API boundaries, missing compatibility data, stale/expired proposals, digest mismatch, rejection, restarts and concurrent approval idempotency. Synthetic edge-case fixtures are created in temporary test directories; the original dataset is preserved.
 
 Reports include individual assertions, responses, source version, model and usage. These are small regression corpora, not estimates of production reliability. Larger paraphrase/adversarial suites, more tenants and representative operational data would be needed before production claims.
+
+### Browser verification
+
+These flows were checked manually against the real authenticated API and configured model ([desktop](docs/screenshots/desktop.jpg), [mobile](docs/screenshots/mobile.jpg), [mobile action review](docs/screenshots/mobile-action-review.jpg)):
+
+- The local launcher opens a tenant-bound session, strips the credential fragment from the URL, and loads the true device count and observation date.
+- A live low-disk query returned the two expected Acme devices (2.00% and 2.59% available). Expanded evidence showed the formula, source checksum, timestamp, field and source line.
+- A proposal request created one pending remediation-ticket simulation. Cancelling the confirmation left it pending. Confirming it changed the status to **Simulated**, recorded the reviewer and cleared the pending count.
+- Switching to an invalid credential cleared rendered answers and the review list and required reconnection. Reconnecting restored only the authenticated tenant's workspace.
+- At a 390px viewport there was no page overflow, including with evidence expanded. The browser console showed no warnings or errors.
+
+Automated frontend tests check that public assets expose no tenant data or provider credentials, that context requires authentication, and that query parameters cannot change tenant scope. These are prototype checks, not a formal accessibility audit.
 
 ## Guardrails
 
@@ -274,7 +286,7 @@ tests/             regression, isolation, approval, HTTP and graph tests
 data/raw/          original assessment dataset
 reports/           inspection and evaluation evidence
 scripts/           reproducible dataset profiling
-docs/design/       UI reference, screenshots and browser verification
+docs/screenshots/  browser interface screenshots
 runtime/           ignored local SQLite state
 ```
 

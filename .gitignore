@@ -15,4 +15,5 @@ build/
 dist/
 deploy/
 docs/private/
-docs/design/
+# Assessment brief (not redistributed)
+Take-Home Assessment*.pdf
