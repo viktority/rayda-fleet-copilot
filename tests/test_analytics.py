@@ -62,6 +62,40 @@ def test_battery_unknown_and_cycle_anomalies(analytics, operator):
     assert desktop.kind == "battery_unknown"
 
 
+def test_battery_eol_risk_needs_corroborating_signals(analytics, operator):
+    facts = analytics.trends(operator, Trend(kind="battery_eol"))
+    assert facts[0].values["finding_count"] == 3
+    risky = {f.device_id: f for f in facts[1:]}
+    assert set(risky) == {"7VP16KHV88LM", "8NM23J95R5I6", "M4XVHUV1MEPZ"}
+    dell = risky["M4XVHUV1MEPZ"]
+    assert dell.values["signals"] == {
+        "service_condition": True,
+        "capacity_decline": True,
+        "high_cycle_count": False,
+    }
+    assert all(len(f.evidence) <= 3 for f in risky.values())
+    assert all("not a remaining-life prediction" in f.text for f in risky.values())
+    globex = Principal(company_id="globex-002", actor_id="viewer")
+    assert analytics.trends(globex, Trend(kind="battery_eol"))[0].values["finding_count"] == 0
+
+
+@pytest.mark.parametrize(("cycles", "flagged"), [(999, False), (1000, True)])
+def test_battery_eol_single_signal_is_not_enough(store, analytics, operator, tmp_path, cycles, flagged):
+    template = json.loads(DATASET.read_text().splitlines()[0])
+    rows = []
+    for day in range(10):
+        row = deepcopy(template)
+        row["collected_at"] = f"2026-05-{14 + day:02d}T09:00:00Z"
+        row["battery"].update(condition="Normal", cycle_count=cycles, full_charge_capacity=5000 - 20 * day)
+        rows.append(row)
+    fixture = tmp_path / "synthetic-battery.ndjson"
+    fixture.write_text("\n".join(json.dumps(r) for r in rows))
+    store.ingest(fixture)
+    # Capacity falls 3.6% in every variant; only the cycle-count boundary adds a second signal.
+    facts = analytics.trends(operator, Trend(kind="battery_eol"))
+    assert facts[0].values["finding_count"] == (1 if flagged else 0)
+
+
 def test_drift_has_before_and_after_evidence(analytics, operator):
     facts = analytics.trends(operator, Trend(kind="compliance"))[1:]
     assert len(facts) == 5

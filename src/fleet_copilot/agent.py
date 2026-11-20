@@ -44,7 +44,7 @@ TOOLS = {
     ),
     "analyze_trends": (
         Trend,
-        "Analyze a historical window. ram/disk return persistent problems: default >85% used/<10% free, at least 80% of span days and 7 observations. battery reports capacity changes, missingness and cycle anomalies, not health%. compliance/software compare observations. Missing days count against persistence.",
+        "Analyze a historical window. ram/disk return persistent problems: default >85% used/<10% free, at least 80% of span days and 7 observations. battery reports capacity changes, missingness and cycle anomalies, not health%. battery_eol returns only devices meeting at least 2 of 3 end-of-life risk signals (latest Service Recommended, >=2% capacity decline, >=1000 cycles); it never predicts remaining life. compliance/software compare observations. Missing days count against persistence.",
     ),
     "propose_action": (
         ProposalRequest,
@@ -158,6 +158,7 @@ Do not conflate snapshots and devices. Distinguish latest state from history; in
 For laptop-only questions set device_type=laptop; do not include desktops.
 For questions older than macOS N, use query_fleet os_older with platform darwin and version_major N.
 For persistent memory, use analyze_trends ram; utilization is not proof of cause or performance impact.
+For batteries approaching end-of-life, use analyze_trends battery_eol. Never give a remaining-life or failure-date estimate; for such requests finish insufficient_data with reason insufficient_evidence.
 For action requests, gather default-policy evidence first, then propose each justified device action.
 Proposals are simulated, pending human approval. You cannot approve, send, buy, or execute anything.
 Never claim a proposal executed. create_upgrade_order lacks a compatibility catalog and must be refused.

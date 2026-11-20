@@ -1,293 +1,143 @@
 # Rayda Fleet Copilot
 
-A runnable LangGraph agent for the supplied fleet telemetry assessment. It answers natural-language questions with verifiable snapshot evidence, detects historical patterns, and proposes justified actions. Administrative approval records a **simulated** effect; it never sends messages, places orders, or modifies a real device.
+A LangGraph agent that answers fleet health and compliance questions from device telemetry, detects trends over time, and proposes actions for IT administrators. Every answer cites source evidence, and every action needs an administrator's approval. Approved actions are **simulated**: nothing is sent, ordered or changed on a real device.
 
-**Deployed demo:** [fleet-demo.dexspaceltd.com](https://fleet-demo.dexspaceltd.com/). A Fleet access token is supplied separately to reviewers. Paste that token into the connection screen; never enter an OpenAI API key there. The demo opens an Acme-scoped administrator session for reviewing simulated actions.
+**Live demo:** [fleet-demo.dexspaceltd.com](https://fleet-demo.dexspaceltd.com/). An access token is provided separately; paste it into the connection screen.
+
+> **Note:** This repository is public only so Rayda's reviewers can access the take-home assessment. It includes the assessment dataset supplied by Rayda, and it will be made private again after the review.
 
 ![Fleet Copilot answering a question with source evidence](docs/screenshots/desktop.jpg)
 
-## Reviewer guide
+For the full detail behind each section below, see the **[technical guide](docs/technical-guide.md)**.
 
-1. Open the demo, or follow the local setup below and run `uv run fleet ui`.
-2. Select **Low disk space**, then **Ask copilot**. The supplied Acme data has two devices with less than 10% available disk space. Expand **View evidence** to inspect source lines, timestamps and calculation methods.
-3. Try **Memory trends** to inspect repeated constraints over the observation window. **Agent steps** shows the operational plan and tool calls.
-4. Enable **Allow action proposals** and ask: `Check acme-macbook-4 for low disk space and propose one remediation ticket if justified.` Open **Action reviews**, inspect the evidence, and choose **Approve simulation** or **Reject**. A second confirmation protects the decision.
-5. Run the tests and offline evaluations below. Live model evaluations are optional and incur provider usage.
+## Try it in five minutes
 
-This repository contains the original dataset, source, locked dependencies, tests, evaluation corpus and saved reports. The frontend needs no Node installation or build step. All fleet facts refer to historical assessment telemetry, not a live device connection.
+1. Open the demo, or run it locally (below) with `uv run fleet ui`.
+2. Click **Low disk space**, then **Ask copilot**. Two Acme devices are below 10% free disk. Expand **View evidence** to see the source lines, timestamps and formulas.
+3. Try **Memory trends**, then open **Agent steps** to see the plan and each tool call.
+4. Turn on **Allow action proposals** and ask: `Check acme-macbook-4 for low disk space and propose one remediation ticket if justified.` Open **Action reviews**, inspect the evidence, then approve or reject.
+5. Run the evaluation suite (below).
 
-## Quick start
+## Installation and setup
 
-Use Git, Python 3.11-3.14 (3.12 is used in CI), and [uv](https://docs.astral.sh/uv/getting-started/installation/). Repository access is required while this submission is private. Commands below run from the cloned repository root.
+Requires Python 3.11–3.14 and [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ```sh
 git clone https://github.com/viktority/rayda-fleet-copilot.git
 cd rayda-fleet-copilot
 uv sync --frozen
-uv run fleet init
-uv run pytest
-uv run fleet eval --output runtime/evaluation-offline.json
+uv run fleet init        # validates and loads the 750 snapshots into local SQLite
 ```
 
-These commands work without an OpenAI key. The original dataset is included in [`data/raw/`](data/raw/). Ingestion validates all 750 snapshots and is transactional and idempotent. The observation window is **14 May to 12 June 2026**, not today's live fleet state. See the [dataset inspection](reports/dataset-inspection.md) for schema, provenance, checksums and data limitations.
+The original dataset is in [`data/raw/`](data/raw/). It covers **14 May to 12 June 2026**; see the [dataset inspection](reports/dataset-inspection.md) for schema and limitations. Tests, offline evaluation and deterministic queries need no API key. For natural-language questions, copy `.env.example` to `.env.local` and set `OPENAI_API_KEY`. The key stays on the server.
 
-For natural-language questions, create the local configuration without replacing an existing file:
+## Running the agent
 
 ```sh
-cp -n .env.example .env.local
-chmod 600 .env.local
+uv run fleet ui                     # browser UI + API at http://127.0.0.1:8000
+uv run fleet ask --company acme-001 'Which devices at Acme are low on disk space?'
+uv run fleet ask --company acme-001 'Show laptops failing high-severity compliance checks.'
 ```
 
-Edit `.env.local` in your editor and set `OPENAI_API_KEY` to your own key. Alternatively, supply it through your environment or secret manager. The default model is `gpt-6.2-sol`; set `OPENAI_MODEL` to a tool-calling Responses API model available to your project if necessary. Model access and billing are provider prerequisites, and model changes can change evaluation outcomes. Credentials are never included in this repository. Do not paste a key into a README, issue, screenshot, or shell-history command.
+The second question should correctly find **no** matches and say so, with evidence for the devices it checked.
 
-Start the browser interface:
-
-```sh
-uv run fleet ui
-```
-
-For the CLI instead:
+Action proposals and approval from the CLI:
 
 ```sh
-uv run fleet ask --company acme-001 \
-  'Which devices at Acme are low on disk space?'
-
-uv run fleet ask --company acme-001 --json \
-  'Which devices consistently use more than 85% RAM on at least 80% of days?'
-
-uv run fleet ask --company acme-001 \
-  'Show laptops failing high-severity compliance checks.'
-```
-
-The last example should report no matching failures, with evidence for the scanned population. It must not invent a problem because the question implies one exists.
-
-For credential-free deterministic inspection:
-
-```sh
-uv run fleet query --company acme-001 '{"kind":"low_disk"}'
-uv run fleet trends --company acme-001 '{"kind":"ram"}'
-```
-
-The CLI is a **trusted local operator interface**: its company and role flags select a principal for local use. They are not an authentication system for remote users. The HTTP interface derives those values exclusively from server-configured credentials.
-
-## Browser interface
-
-For the easiest local experience:
-
-```sh
-uv run fleet ui
-```
-
-This starts the frontend and API together on `http://127.0.0.1:8000` and opens a connected browser tab. Use the example buttons or type a question, expand **View evidence**, and open **Action reviews** to inspect proposals. **Approve simulation** and **Reject** each show the exact payload and require a separate confirmation. All effects remain simulated.
-
-The launcher binds a single trusted local principal (Acme administrator by default). To inspect a different company or access level, start a separate instance:
-
-```sh
-uv run fleet ui --company globex-002 --role viewer --port 8001
-```
-
-There is no company or role override in the browser. Like the CLI, this launcher is for the trusted local operator; it is not a public login system. It generates an ephemeral Fleet bearer credential, writes the connection URL to `runtime/ui-access-PORT.json` with owner-only permissions, and opens it in the browser. The URL fragment is removed immediately and the Fleet credential is kept in that tab's session storage. **The OpenAI key never enters the frontend.** The access file is removed on normal shutdown; restarting rotates the credential. Disconnect clears the browser tab's stored credential and visible data. `--no-open` starts the service without launching a browser.
-
-The existing `fleet serve` command also serves this interface at `/`; connect using a configured Fleet bearer token. Static HTML/CSS/JavaScript are included in the Python package, so no Node installation or frontend build step is needed. The interface supports loading, empty results, errors, expired proposals, and narrow mobile layouts.
-
-## A complete action workflow
-
-```sh
-uv run fleet ask --company acme-001 --propose --json \
+uv run fleet ask --company acme-001 --propose \
   'Check acme-macbook-4 for low disk space and propose one remediation ticket if justified.'
-
 uv run fleet proposals --company acme-001
-```
-
-Review the returned action, target, canonical evidence, simulation scope, expiry and digest. Then use the proposal ID and digest from that exact payload:
-
-```sh
 uv run fleet decide --company acme-001 --actor reviewer --role admin \
   PROPOSAL_ID --digest REVIEWED_DIGEST --approve --confirm
-
 uv run fleet audit --company acme-001 --role admin
 ```
 
-Use `--reject --confirm` instead to reject. The model never receives the `decide` operation. An operator can propose; only an administrator can approve or reject. `--propose` enables proposals for that request and does not authorize execution.
+There is also an authenticated HTTP API (`uv run fleet serve`). Its endpoints and token setup are in the [technical guide](docs/technical-guide.md#http-api).
 
-Proposal state and audit history survive process restarts in `runtime/fleet.sqlite3`. A repeated matching decision returns the same recorded effect. Concurrent approvals are serialized by a SQLite transaction and a unique effect key. A changed review digest, expired proposal, changed dataset, wrong tenant, wrong role, or conflicting prior decision prevents execution. Proposals expire after 24 hours; ask again for a fresh proposal. Repeated calls with the same run/action/device/evidence deduplicate; separate intentional runs can create separate proposals.
-
-## Authenticated HTTP API
-
-Set `FLEET_API_TOKENS` in the environment to a JSON object mapping **independent, random bearer tokens of at least 32 characters** to trusted principals:
-
-```json
-{
-  "<random-operator-token>": {"company_id":"acme-001","actor_id":"it-operator","role":"operator"},
-  "<different-random-admin-token>": {"company_id":"acme-001","actor_id":"it-admin","role":"admin"}
-}
-```
-
-These are illustrative placeholders, not usable credentials. Generate tokens locally with a cryptographic random generator; do not reuse the OpenAI API key. The API refuses to start with no token bindings or short tokens. Run:
+## Running evaluations
 
 ```sh
-uv run fleet serve --port 8000
+uv run pytest                                               # 42 tests
+uv run fleet eval --output runtime/evaluation-offline.json  # 21 cases, deterministic, no key
+uv run fleet eval --live --output runtime/evaluation-live.json  # same 21 cases against the real model
 ```
 
-Open `http://127.0.0.1:8000/docs` for interactive API documentation. Authenticate with the appropriate bearer credential.
+- **Offline** replaces the model with a scripted router that makes the correct tool calls. Everything else is real: the LangGraph loop, tools, citation checks and action policy. It's deterministic and runs in CI.
+- **Live** sends the questions to the configured model. It checks the expected devices and counts, refusals, tenant isolation, that citations resolve, and that no action runs without approval.
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| GET | `/health` | Readiness and simulation mode; no tenant data |
-| GET | `/v1/context` | Company, role, device count and observation date derived from the bearer credential |
-| POST | `/v1/ask` | `{"question":"...","allow_proposals":false}` |
-| GET | `/v1/runs/{id}` | Tenant-scoped saved answer, evidence and execution trace |
-| GET | `/v1/proposals` | Tenant-scoped review queue |
-| GET | `/v1/proposals/{id}` | Immutable proposed payload and review digest |
-| POST | `/v1/proposals/{id}/decision` | Admin-only `decision`, `expected_digest`, `confirmed:true` |
-| GET | `/v1/audit` | Administrator view of that company's audit events |
-
-Requests cannot supply a company or role override. Unknown and inaccessible device/run/proposal IDs return equivalent not-found responses. No CORS or unauthenticated development bypass is enabled. This is an assessment prototype with bearer-token access, not a production identity system. Production use would require managed user identity, token lifecycle management, quotas, operational monitoring, backups, and reviewed integrations with real action providers.
+The cases cover each tenant's queries, empty-result traps, version and persistence calculations, battery end-of-life risk, compliance drift, a cross-tenant request, a prompt-injection attempt, refusals of unsupported predictions and unknown policy, all three action types, and an action refused for lack of evidence. Saved results: [offline 21/21](reports/evaluation-offline.json), [live 21/21](reports/evaluation-live.json). This is a small regression corpus, not a reliability estimate.
 
 ## Agent architecture
 
 ```mermaid
-flowchart TD
-    U[Authenticated request / trusted local principal] --> S[Bind immutable tenant and source hash]
-    S --> M[LangGraph model node]
-    M --> P[Record operational plan]
-    P --> M
-    M --> T[Validate and dispatch typed tool]
-    T --> Q[Scoped telemetry queries and deterministic analytics]
-    Q --> E[Canonical findings and evidence ledger]
-    E --> M
-    T --> A[Revalidate actionable evidence and persist pending proposal]
-    A --> M
-    M --> F[Finish with verified finding IDs]
-    F --> R[Render facts and citations; persist run]
-    A --> H[Separate administrator decision]
-    H --> V[Verify role, tenant, digest, expiry and source version]
-    V --> X[Atomic simulated effect and audit]
+flowchart LR
+    Q[Question + bound tenant] --> P[make_plan]
+    P --> M[Model chooses next tool]
+    M --> T[Typed tool<br/>validated, tenant-scoped]
+    T -->|findings / errors| M
+    M --> F[finish with finding IDs]
+    F --> R[Server renders cited answer]
+    T -.->|propose_action| A[Pending proposal]
+    A -.-> H[Admin approval<br/>outside the agent]
 ```
 
-The model chooses tools, filters and subsequent steps based on tool results. The graph loops until a valid finish or a 12-step budget. Tool errors become structured observations the model can recover from. Invalid tool names, schemas, unauthorized calls and fabricated citations cannot escape into executable operations or factual final prose. There is no arbitrary SQL, shell, network, or execution tool exposed to the model.
+An explicit LangGraph loop runs between a `model` node and a `tools` node:
 
-Planning is a short observable sequence of intended operations, not a private chain-of-thought transcript. The response includes the plan, tool trace, model name, usage, dataset hash, elapsed time, findings and proposals.
-
-Approval uses an application-owned durable state machine rather than keeping a model process suspended in a LangGraph interrupt. This makes the exact reviewed payload and role boundary explicit, survives restarts, and permits atomic local effect recording. The reasoning graph is request-scoped; this version does not promise multi-turn conversational memory or checkpoint recovery for a failed model request. Pending proposals remain accessible if a later model request fails.
+- The model must record a plan first. After that it makes one tool call per step and decides the next one from the result, up to a 12-step budget.
+- Tool errors go back to the model as observations it can recover from.
+- The tenant is fixed before the graph starts, so the model never chooses which company's data to read.
+- Approval is deliberately outside the graph. It is a durable, admin-only state machine the model can't call.
 
 ## Tool catalog
 
-| Tool | Behavior |
+| Tool | Purpose |
 | --- | --- |
-| `make_plan` | Record up to six operational steps, once at the start |
-| `query_fleet` | Latest inventory, disk, RAM, failed compliance, macOS major-version comparison, service-condition batteries, exact software presence; optional device/date/platform/laptop-or-desktop filters |
-| `analyze_trends` | Persistent disk/RAM, capacity changes and battery anomalies, before/after compliance and software drift |
-| `propose_action` | Validate canonical findings and create a pending simulated ticket, replacement-review flag, or employee notification |
-| `finish` | Select existing finding IDs and a supported answer/refusal status; server renders the final facts |
+| `make_plan` | Records a short operational plan before any other tool |
+| `query_fleet` | Current state: inventory, low disk, high RAM, failed compliance, older macOS, battery service condition, installed software |
+| `analyze_trends` | History: persistent RAM/disk pressure, battery end-of-life risk and capacity changes, compliance and software drift |
+| `propose_action` | Creates a pending, simulated `open_remediation_ticket`, `notify_employee` or `flag_device_for_replacement`, only when the cited findings qualify |
+| `finish` | Picks which findings answer the question, or a refusal reason |
 
-`create_upgrade_order` is explicitly refused because no trusted hardware compatibility or purchasing catalog is supplied. Pretending an arbitrary component specification was justified would undermine the assessment's evidence requirement.
+`create_upgrade_order` is **refused**: the data has no hardware compatibility or purchasing catalog, so no specification could be justified by evidence. The model has no SQL, shell or network access.
 
-For `open_remediation_ticket` and `notify_employee`, qualifying findings are a current low-disk result, a failed compliance check, a reported battery service condition, or persistent RAM utilization under the default policy. Notification recipients come from device ownership in telemetry; arbitrary contact addresses or model-written messages are not accepted. `flag_device_for_replacement` means **assessment only** and requires both persistent RAM utilization and a battery service condition. This conservative, documented rule is a demo policy assumption, not a Rayda policy or a purchasing decision.
+## Grounding strategy
 
-## Grounding and policy
-
-Every finding has a deterministic ID, server-authored factual text, computed values, calculation method, and evidence containing source SHA-256, line number, company ID, device ID, timestamp and relevant field paths. Full evidence stays in the server ledger; compact findings go to the model. Final prose uses canonical findings, preventing invented numbers or fabricated citation text. Selection relevance still depends on model routing and is measured separately in live evaluations.
-
-Empty results include evidence for the scanned population. Counts use unique devices' latest snapshots, not the number of observations. Historical queries use their requested as-of date. Source bytes remain unchanged; ingestion stores a validated normalized representation. Replacing the source invalidates pending approvals conservatively, even for a change in another tenant.
-
-Default policy assumptions:
-
-- Low disk: strictly less than 10% available on a volume.
-- High RAM: strictly greater than 85% used.
-- Persistent: threshold met on at least 80% of days in the requested window (or the selected population's observed span when no dates are supplied), with at least seven observed days. Same-day samples count once; missing dates count against the denominator. Disk persistence is tracked per mount point.
-- Battery health percentage and remaining life are unsupported without design capacity and an adequate model. Cycle-count decreases are surfaced rather than corrected.
-- Software presence is not proof of unauthorized use, malware or a policy violation.
-- Current-action eligibility uses the documented default policy and latest available dataset evidence. Custom-threshold explorations cannot silently weaken action guards.
-
-Policy parameters can be set explicitly for analytical queries. They are visible in finding metadata. Human administrators must interpret historical evidence appropriately before any real deployment; all adapters in this submission are simulated.
-
-## Evaluation and verification
-
-```sh
-uv run pytest
-uv run ruff check src tests
-uv run ruff format --check src tests
-uv run fleet eval --output runtime/evaluation-offline.json
-uv run fleet eval --live --output runtime/evaluation-live.json
-```
-
-Verified during development: **39 tests passing**, **14/14 offline cases**, and **14/14 live cases** using the recorded model configuration. See the saved [offline report](reports/evaluation-offline.json), [live report](reports/evaluation-live.json), and the [browser checks](#browser-verification) below. These are observed results, not guarantees of future model behavior. New runs write to ignored `runtime/` paths so the original report evidence stays intact. GitHub Actions runs lint, formatting, tests and the offline corpus on pushes and pull requests; no provider key is required in CI.
-
-Offline evaluation uses a **routing oracle** to exercise the actual LangGraph loop, tools, citations and proposal policy on a fixed 14-case corpus. It is deterministic and needs no provider key. It does not measure natural-language understanding. Live evaluation sends the same questions to the configured OpenAI model, then checks expected device sets/counts, status, tenant isolation, citation resolution, canonical answer rendering, proposal counts and the absence of effects without approval. Live evaluation incurs API usage and is not perfectly deterministic.
-
-The test suite also covers historical vs latest counts, threshold boundaries, missing telemetry, version filtering, data-ingestion rollback, deliberately colliding tenant/device IDs, fabricated citations, unexposed execution tools, authenticated API boundaries, missing compatibility data, stale/expired proposals, digest mismatch, rejection, restarts and concurrent approval idempotency. Synthetic edge-case fixtures are created in temporary test directories; the original dataset is preserved.
-
-Reports include individual assertions, responses, source version, model and usage. These are small regression corpora, not estimates of production reliability. Larger paraphrase/adversarial suites, more tenants and representative operational data would be needed before production claims.
-
-### Browser verification
-
-These flows were checked manually against the real authenticated API and configured model ([desktop](docs/screenshots/desktop.jpg), [mobile](docs/screenshots/mobile.jpg), [mobile action review](docs/screenshots/mobile-action-review.jpg)):
-
-- The local launcher opens a tenant-bound session, strips the credential fragment from the URL, and loads the true device count and observation date.
-- A live low-disk query returned the two expected Acme devices (2.00% and 2.59% available). Expanded evidence showed the formula, source checksum, timestamp, field and source line.
-- A proposal request created one pending remediation-ticket simulation. Cancelling the confirmation left it pending. Confirming it changed the status to **Simulated**, recorded the reviewer and cleared the pending count.
-- Switching to an invalid credential cleared rendered answers and the review list and required reconnection. Reconnecting restored only the authenticated tenant's workspace.
-- At a 390px viewport there was no page overflow, including with evidence expanded. The browser console showed no warnings or errors.
-
-Automated frontend tests check that public assets expose no tenant data or provider credentials, that context requires authentication, and that query parameters cannot change tenant scope. These are prototype checks, not a formal accessibility audit.
+- Tools return **findings**, each with a deterministic ID, computed values, the method used, and evidence: source file hash, line number, device and timestamp.
+- The model only chooses which finding IDs to report. The server writes the final answer from those findings, so the model can't invent numbers or citations, and IDs that were never returned are rejected.
+- Empty results are still answered, with evidence for the devices that were checked.
+- Thresholds are explicit: low disk is <10% free; high RAM is >85% used; "persistent" means on ≥80% of days, with at least 7 days observed.
+- Batteries approaching end-of-life are flagged only when at least 2 of 3 signals agree: a Service Recommended condition, a ≥2% capacity decline over the window, and ≥1,000 cycles. Three Acme devices qualify.
+- Unsupported conclusions are refused rather than estimated. Examples: an exact battery failure date, or calling software "forbidden" without a policy.
 
 ## Guardrails
 
-| Boundary | Enforcement | Verification |
-| --- | --- | --- |
-| Tenant isolation | Immutable principal bound outside the model; database and evidence lookups scoped by company | Cross-tenant API, tool, run and proposal tests, including colliding device IDs |
-| Evidence | Only canonical finding IDs can appear in final facts or justify proposals | Fabricated citations, empty populations, source-line resolution and numerical assertions |
-| Approval | Separate administrator endpoint with explicit confirmation, digest, expiry and source-version checks | Rejection, unauthorized role, stale payload, expiry and data-change cases |
-| Effect safety | Simulation-only adapters; no execution tool exposed to the model | No effect before approval, restart durability and concurrent idempotency tests |
-| Untrusted content | Typed tool schemas; telemetry and prompts cannot alter principal, policy or allowed operations | Invalid tools, schema failures and adversarial requests |
-| Traceability | Persisted plans, tool calls, source hashes, proposals, decisions and append-only audit events | Saved run/audit retrieval and audit mutation tests |
-
-## Assessment deliverables
-
-| Requirement | Where to review |
+| Requirement | How it's enforced |
 | --- | --- |
-| Git repository and runnable source | This repository; [`src/fleet_copilot/`](src/fleet_copilot/) |
-| Installation, setup and running the agent | [Quick start](#quick-start), [browser interface](#browser-interface), [HTTP API](#authenticated-http-api) |
-| Runnable evaluation suite and deterministic execution | [Evaluation and verification](#evaluation-and-verification), [`evaluation.py`](src/fleet_copilot/evaluation.py), [`tests/`](tests/), `uv.lock` |
-| Planning, tool calls and explicit agent loop | [Agent architecture](#agent-architecture), [`agent.py`](src/fleet_copilot/agent.py) |
-| Tool catalog | [Tool catalog](#tool-catalog), typed schemas in [`analytics.py`](src/fleet_copilot/analytics.py) and [`actions.py`](src/fleet_copilot/actions.py) |
-| Grounded Q&A, trends, evidence and explanations | [Grounding and policy](#grounding-and-policy), source-linked findings in CLI/API/browser |
-| Justified action proposals, human approval and audit | [Complete action workflow](#a-complete-action-workflow), [guardrails](#guardrails) |
-| Key decisions and trade-offs | [Design choices and limits](#design-choices-and-limits) |
+| Tenant isolation | Principal bound outside the model; every query filtered by company; other tenants' IDs look identical to missing ones |
+| Human approval | Separate admin-only decision with explicit confirmation and the exact payload digest. Proposals expire after 24h and are tied to the dataset version |
+| Evidence for actions | Each action type needs specific qualifying findings, re-checked when the proposal is created |
+| Audit log | Plans, tool calls, proposals and decisions persisted in an append-only audit table |
+| Safe effects | Approved actions are recorded as simulations only. Repeated or concurrent approvals produce one effect |
 
-The assessment's action names are examples. This implementation supports three guarded proposal types and explicitly refuses upgrade orders without compatibility/purchasing evidence. It also refuses a battery end-of-life estimate when design capacity or a valid remaining-life model is absent. Those limits are intentional evidence boundaries.
+Each row has tests, including colliding device IDs across tenants, fabricated citations, stale digests and concurrent approvals.
 
-## Troubleshooting
+## Key design decisions and trade-offs
 
-- **Missing key / provider error:** check the ignored `.env.local` file, project billing and model access. Offline tests and deterministic queries remain available without a key. Provider details are deliberately sanitized in user-facing errors.
-- **Port already in use:** use `uv run fleet ui --port 8001`. A second launcher cannot replace the first launcher's session file.
-- **Connection expired or invalid:** restart `fleet ui` to open a fresh local session, or obtain a fresh demo access token. Fleet credentials and OpenAI credentials serve different purposes.
-- **No matching devices:** inspect the scanned-population evidence and the requested company/date. Empty results are valid; for example, the provided latest laptop records contain no high-severity compliance failures.
-- **Proposal expired or changed:** ask for a fresh proposal and review its new digest. Proposals are valid for 24 hours and are tied to the exact dataset version.
-- **A question takes too long:** the browser bounds waiting and reports failures. If a request was submitted, check **Action reviews** before retrying a proposal, because server work may finish after a browser disconnect.
+- **SQL analytics over retrieval.** 750 structured snapshots call for exact formulas, not a vector database.
+- **Server-written answers.** Every number is traceable, at the cost of less fluent prose. The model still plans, picks tools and adapts.
+- **Approval outside the graph.** A durable state machine instead of a LangGraph interrupt keeps the role boundary explicit and survives restarts.
+- **Refuse rather than guess.** Upgrade orders and exact battery-life predictions are declined because the data can't support them. End-of-life *risk* is reported from corroborating signals instead.
+- **Not production yet.** That would need real identity management, monitoring, backups and reviewed integrations with action providers.
 
-## Design choices and limits
+More detail, including the HTTP API, the full policy, all test coverage and troubleshooting, is in the [technical guide](docs/technical-guide.md).
 
-- **Structured analytics, no vector database:** 750 well-structured snapshots fit easily in SQLite. Numerical comparisons and window calculations benefit from explicit formulas. A retrieval index would add complexity without improving this dataset's core tasks.
-- **Scoped queries, no model-controlled tenant:** a trusted principal is bound outside the graph; every database operation filters by company. A conservative known-company prompt check adds an early refusal but is not the authorization mechanism.
-- **Canonical final facts:** stronger numeric traceability at the cost of less fluent free-form explanations. The model still performs planning, tool selection and adaptation.
-- **Application-enforced approval:** evidence revalidation and immutable digests protect the review boundary. SQLite transactions give one local effect per approved proposal. Real external actions would need an outbox, provider idempotency and reconciliation; this code makes no external exactly-once claim.
-- **Append-only audit API:** update/delete triggers prevent accidental application mutation. This is not tamper-proof storage against an administrator who controls the SQLite file.
-- **Bounded model use:** at most 12 tool steps, one call at a time, a 2,500-token output cap per response, request timeouts and one provider retry. Credentials, raw provider errors and complete prompts are not written to audit records. SDK calls use `store=False`; that setting is not a claim of zero provider retention.
-- **Reproducibility:** committed dependency lock, explicit policies, source checksum and deterministic offline runs. The configured model name is recorded; a floating model name and provider behavior can change live results.
-
-## Layout
+## Repository layout
 
 ```text
-src/fleet_copilot/  domain, persistence, analytics, actions, graph, provider, API, CLI, evaluation
-src/fleet_copilot/web/  buildless HTML/CSS/JavaScript frontend
-tests/             regression, isolation, approval, HTTP and graph tests
-data/raw/          original assessment dataset
-reports/           inspection and evaluation evidence
-scripts/           reproducible dataset profiling
-docs/screenshots/  browser interface screenshots
-runtime/           ignored local SQLite state
+src/fleet_copilot/   agent, tools, analytics, actions, storage, API, CLI, evaluation
+src/fleet_copilot/web/  browser UI (plain HTML/CSS/JS, no build step)
+tests/               isolation, grounding, approval, API and graph tests
+data/raw/            original dataset
+reports/             dataset inspection and saved evaluation reports
+docs/                technical guide and screenshots
 ```
-
-Implementation references: [LangGraph graph loop](https://docs.langchain.com/oss/python/langgraph/quickstart), [LangGraph durable interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts), [OpenAI function calling](https://developers.openai.com/api/docs/guides/function-calling), and [OpenAI model changelog](https://developers.openai.com/api/docs/changelog).

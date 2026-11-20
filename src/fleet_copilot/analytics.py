@@ -42,8 +42,15 @@ class Query(StrictModel):
         return self
 
 
+# Documented demo policy for battery end-of-life risk. These are corroborating signals,
+# not a remaining-life model: design capacity and model-specific cycle ratings are absent.
+EOL_CYCLE_LIMIT = 1000  # A common manufacturer rated cycle life; not model-specific.
+EOL_CAPACITY_DROP_PERCENT = 2.0  # Decline in recorded full-charge capacity across the window.
+EOL_MIN_SIGNALS = 2
+
+
 class Trend(StrictModel):
-    kind: Literal["disk", "ram", "battery", "compliance", "software"]
+    kind: Literal["disk", "ram", "battery", "battery_eol", "compliance", "software"]
     device_id: str | None = None
     start: date | None = None
     end: date | None = None
@@ -358,6 +365,57 @@ class Analytics:
                             device,
                         )
                     )
+            elif q.kind == "battery_eol":
+                bs = [r for r in days if "battery" in r]
+                if len(bs) < q.min_observations:
+                    continue
+                first, last = bs[0]["battery"], bs[-1]["battery"]
+                drop = 100 * (first["full_charge_capacity"] - last["full_charge_capacity"])
+                drop = drop / first["full_charge_capacity"] if first["full_charge_capacity"] else 0.0
+                service = [r for r in bs if r["battery"]["condition"] == "Service Recommended"]
+                signals = {
+                    "service_condition": last["condition"] == "Service Recommended",
+                    "capacity_decline": drop >= EOL_CAPACITY_DROP_PERCENT,
+                    "high_cycle_count": last["cycle_count"] >= EOL_CYCLE_LIMIT,
+                }
+                met = [name for name, hit in signals.items() if hit]
+                if len(met) >= EOL_MIN_SIGNALS:
+                    values = {
+                        **common,
+                        "signals": signals,
+                        "signals_met": len(met),
+                        "latest_condition": last["condition"],
+                        "service_days": len(service),
+                        "battery_days": len(bs),
+                        "first_capacity": first["full_charge_capacity"],
+                        "last_capacity": last["full_charge_capacity"],
+                        "capacity_drop_percent": drop,
+                        "latest_cycle_count": last["cycle_count"],
+                        "cycle_limit": EOL_CYCLE_LIMIT,
+                        "capacity_drop_threshold_percent": EOL_CAPACITY_DROP_PERCENT,
+                    }
+                    text = (
+                        f"{host} ({device}): battery end-of-life risk, {len(met)} of 3 signals. "
+                        f"Latest condition {last['condition']} ({len(service)} of {len(bs)} observed days Service Recommended); "
+                        f"full-charge capacity {first['full_charge_capacity']} to {last['full_charge_capacity']} "
+                        f"({-drop:+.1f}%, units unspecified) from {bs[0]['collected_at']} to {bs[-1]['collected_at']}; "
+                        f"cycle count {last['cycle_count']} (policy reference {EOL_CYCLE_LIMIT}). "
+                        "This prioritizes service review; it is not a remaining-life prediction."
+                    )
+                    cited = list({r["_line"]: r for r in [bs[0], *service[:1], bs[-1]]}.values())
+                    results.append(
+                        finding(
+                            principal,
+                            "battery_eol_risk",
+                            text,
+                            values,
+                            cited,
+                            ["battery.condition", "battery.full_charge_capacity", "battery.cycle_count"],
+                            f"At least {EOL_MIN_SIGNALS} of: latest condition Service Recommended; full-charge capacity "
+                            f"decline >= {EOL_CAPACITY_DROP_PERCENT:g}% first-to-last; latest cycle count >= {EOL_CYCLE_LIMIT}",
+                            device,
+                        )
+                    )
             elif q.kind in ("compliance", "software"):
                 for before, after in zip(rs, rs[1:]):
                     if q.kind == "compliance":
@@ -418,6 +476,7 @@ class Analytics:
                         "ram": "memory",
                         "disk": "disk_volumes",
                         "battery": "battery",
+                        "battery_eol": "battery",
                         "compliance": "compliance_results",
                         "software": "installed_software",
                     }[q.kind],
