@@ -14,7 +14,7 @@ For the full detail behind each section below, see the **[technical guide](docs/
 
 1. Open the demo, or run it locally (below) with `uv run fleet ui`.
 2. Click **Low disk space**, then **Ask copilot**. Two Acme devices are below 10% free disk. Expand **View evidence** to see the source lines, timestamps and formulas.
-3. Try **Memory trends**, then open **Agent steps** to see the plan and each tool call.
+3. Try **Battery end-of-life** or **Memory trends**. Under each answer, **Agent steps** shows the plan and every tool call with its arguments, including any call the server rejected and the model then corrected.
 4. Turn on **Allow action proposals** and ask: `Check acme-macbook-4 for low disk space and propose one remediation ticket if justified.` Open **Action reviews**, inspect the evidence, then approve or reject.
 5. Run the evaluation suite (below).
 

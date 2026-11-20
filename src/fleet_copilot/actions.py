@@ -106,6 +106,7 @@ class Actions:
                 "run_id": run_id,
                 "action": request.action,
                 "device_id": request.device_id,
+                "hostname": latest["os"]["hostname"],
                 "employee_id": latest["employee_id"] if request.action == "notify_employee" else None,
                 "source_sha256": sha,
                 "findings": [f.model_dump() for f in selected],

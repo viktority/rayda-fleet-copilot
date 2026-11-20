@@ -1,6 +1,6 @@
 {
   "mode": "live-model",
-  "evaluated_at": "2026-11-20T15:08:15.594054+00:00",
+  "evaluated_at": "2026-11-20T15:42:15.537043+00:00",
   "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
   "passed": true,
   "passed_cases": 21,
@@ -23,17 +23,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-b81386799f1c4770a0cde0ab372ba9c3",
+        "run_id": "R-2c96778449ee48909732fa44e99ef6b2",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z. [F-76cf15d7c033f721]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-abaf10258a0d58b9]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-c5d8e6d1db889ec6]",
+        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-3cc5e8e63d87ef8d]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-56d4f1de51167fd9]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-9ef2c3a9dda457e9]",
         "findings": [
           {
-            "id": "F-76cf15d7c033f721",
+            "id": "F-3cc5e8e63d87ef8d",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z.",
+            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 10,
@@ -177,12 +177,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-abaf10258a0d58b9",
+            "id": "F-56d4f1de51167fd9",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "low_disk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -208,12 +209,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-c5d8e6d1db889ec6",
+            "id": "F-9ef2c3a9dda457e9",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "low_disk",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-macbook-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -241,23 +243,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Query latest disk telemetry for devices below 10% free.",
-          "Return matching findings and count."
+          "Query latest Acme telemetry for devices below 10% free disk space.",
+          "Return matching findings and the count summary."
         ],
         "trace": [
           {
-            "run_id": "R-b81386799f1c4770a0cde0ab372ba9c3",
+            "run_id": "R-2c96778449ee48909732fa44e99ef6b2",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query latest disk telemetry for devices below 10% free.",
-                "Return matching findings and count."
+                "Query latest Acme telemetry for devices below 10% free disk space.",
+                "Return matching findings and the count summary."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-b81386799f1c4770a0cde0ab372ba9c3",
+            "run_id": "R-2c96778449ee48909732fa44e99ef6b2",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -274,13 +276,13 @@
             "ok": true
           },
           {
-            "run_id": "R-b81386799f1c4770a0cde0ab372ba9c3",
+            "run_id": "R-2c96778449ee48909732fa44e99ef6b2",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-76cf15d7c033f721",
-                "F-abaf10258a0d58b9",
-                "F-c5d8e6d1db889ec6"
+                "F-3cc5e8e63d87ef8d",
+                "F-56d4f1de51167fd9",
+                "F-9ef2c3a9dda457e9"
               ],
               "status": "answered",
               "reason": "none"
@@ -301,14 +303,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 36,
+            "output_tokens": 41,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1569
+            "total_tokens": 1574
           },
           {
-            "input_tokens": 1587,
+            "input_tokens": 1592,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -321,26 +323,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1649
+            "total_tokens": 1654
           },
           {
-            "input_tokens": 2173,
+            "input_tokens": 2194,
             "input_tokens_details": {
-              "cache_write_tokens": 1444,
+              "cache_write_tokens": 1465,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1444
+                "ttl_30m_tokens": 1465
               }
             },
-            "output_tokens": 63,
+            "output_tokens": 67,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2236
+            "total_tokens": 2261
           }
         ],
-        "elapsed_seconds": 12.208
+        "elapsed_seconds": 8.195
       }
     },
     {
@@ -358,17 +360,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-2ca0c7a529d14b83af49e0a30134011a",
+        "run_id": "R-60dc2fc7f88f498892fedce3ce1795fe",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:47:00Z. [F-7408cf3f0313e340]\n\nglobex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free. [F-24daad58196ecf4b]\n\nglobex-dell-7 (E4V0SB5I0MYU) has low disk space (C:\\: 2.39% free) as of 2026-06-12T08:54:00Z; threshold is <10% free. [F-71be863b6744d360]",
+        "answer": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-b79d68aa25d6aa52]\n\nglobex-dell-7 (E4V0SB5I0MYU) has low disk space (C:\\: 2.39% free) as of 2026-06-12T08:54:00Z; threshold is <10% free. [F-32ce66e8acf3c51b]\n\nglobex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free. [F-9ea56c617883046c]",
         "findings": [
           {
-            "id": "F-7408cf3f0313e340",
+            "id": "F-b79d68aa25d6aa52",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:47:00Z.",
+            "text": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 8,
@@ -488,43 +490,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-24daad58196ecf4b",
-            "company_id": "globex-002",
-            "device_id": "JRZSGXVMKE6M",
-            "kind": "low_disk",
-            "text": "globex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free.",
-            "values": {
-              "volumes": [
-                {
-                  "mount_point": "C:\\",
-                  "free_percent": 2.0000000000436557,
-                  "available_bytes": 21990232556,
-                  "size_bytes": 1099511627776
-                }
-              ],
-              "threshold_percent": 10.0
-            },
-            "evidence": [
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 480,
-                "company_id": "globex-002",
-                "device_id": "JRZSGXVMKE6M",
-                "collected_at": "2026-06-12T10:46:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              }
-            ],
-            "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
-          },
-          {
-            "id": "F-71be863b6744d360",
+            "id": "F-32ce66e8acf3c51b",
             "company_id": "globex-002",
             "device_id": "E4V0SB5I0MYU",
             "kind": "low_disk",
             "text": "globex-dell-7 (E4V0SB5I0MYU) has low disk space (C:\\: 2.39% free) as of 2026-06-12T08:54:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "globex-dell-7",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -548,25 +520,59 @@
               }
             ],
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
+          },
+          {
+            "id": "F-9ea56c617883046c",
+            "company_id": "globex-002",
+            "device_id": "JRZSGXVMKE6M",
+            "kind": "low_disk",
+            "text": "globex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free.",
+            "values": {
+              "hostname": "globex-thinkpad-8",
+              "volumes": [
+                {
+                  "mount_point": "C:\\",
+                  "free_percent": 2.0000000000436557,
+                  "available_bytes": 21990232556,
+                  "size_bytes": 1099511627776
+                }
+              ],
+              "threshold_percent": 10.0
+            },
+            "evidence": [
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 480,
+                "company_id": "globex-002",
+                "device_id": "JRZSGXVMKE6M",
+                "collected_at": "2026-06-12T10:46:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              }
+            ],
+            "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           }
         ],
         "proposals": [],
         "plan": [
-          "Query the latest Globex disk telemetry for devices below 10% free and return the findings and count."
+          "Query latest Globex disk telemetry for devices below 10% free.",
+          "Return matching findings and the count summary."
         ],
         "trace": [
           {
-            "run_id": "R-2ca0c7a529d14b83af49e0a30134011a",
+            "run_id": "R-60dc2fc7f88f498892fedce3ce1795fe",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query the latest Globex disk telemetry for devices below 10% free and return the findings and count."
+                "Query latest Globex disk telemetry for devices below 10% free.",
+                "Return matching findings and the count summary."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-2ca0c7a529d14b83af49e0a30134011a",
+            "run_id": "R-60dc2fc7f88f498892fedce3ce1795fe",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -583,13 +589,13 @@
             "ok": true
           },
           {
-            "run_id": "R-2ca0c7a529d14b83af49e0a30134011a",
+            "run_id": "R-60dc2fc7f88f498892fedce3ce1795fe",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-7408cf3f0313e340",
-                "F-24daad58196ecf4b",
-                "F-71be863b6744d360"
+                "F-b79d68aa25d6aa52",
+                "F-32ce66e8acf3c51b",
+                "F-9ea56c617883046c"
               ],
               "status": "answered",
               "reason": "none"
@@ -610,14 +616,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 39,
+            "output_tokens": 40,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1531
+            "total_tokens": 1532
           },
           {
-            "input_tokens": 1549,
+            "input_tokens": 1550,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -630,26 +636,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1611
+            "total_tokens": 1612
           },
           {
-            "input_tokens": 2133,
+            "input_tokens": 2147,
             "input_tokens_details": {
-              "cache_write_tokens": 1444,
+              "cache_write_tokens": 1458,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1444
+                "ttl_30m_tokens": 1458
               }
             },
-            "output_tokens": 59,
+            "output_tokens": 61,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2192
+            "total_tokens": 2208
           }
         ],
-        "elapsed_seconds": 7.748
+        "elapsed_seconds": 6.74
       }
     },
     {
@@ -667,17 +673,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-875c179b48b24398be8449a7503bd401",
+        "run_id": "R-74dfc315a0bf4551b23d4255a9b2d4d6",
         "company_id": "initech-003",
         "status": "answered",
-        "answer": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:57:00Z. [F-3b3937ed517e4d0d]\n\ninitech-macbook-6 (DARFCP0BQM2G) has low disk space (/: 2.00% free) as of 2026-06-12T10:31:00Z; threshold is <10% free. [F-29c3d7b05a0da67a]\n\ninitech-mac-4 (RLD7WV7J82SH) has low disk space (/: 2.00% free) as of 2026-06-12T08:50:00Z; threshold is <10% free. [F-595a2c12c985d386]",
+        "answer": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-a36b8a0d60bb2eac]\n\ninitech-macbook-6 (DARFCP0BQM2G) has low disk space (/: 2.00% free) as of 2026-06-12T10:31:00Z; threshold is <10% free. [F-852ee4242a3bd4d3]\n\ninitech-mac-4 (RLD7WV7J82SH) has low disk space (/: 2.00% free) as of 2026-06-12T08:50:00Z; threshold is <10% free. [F-05161ce2d010a08e]",
         "findings": [
           {
-            "id": "F-3b3937ed517e4d0d",
+            "id": "F-a36b8a0d60bb2eac",
             "company_id": "initech-003",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:57:00Z.",
+            "text": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 7,
@@ -785,12 +791,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-29c3d7b05a0da67a",
+            "id": "F-852ee4242a3bd4d3",
             "company_id": "initech-003",
             "device_id": "DARFCP0BQM2G",
             "kind": "low_disk",
             "text": "initech-macbook-6 (DARFCP0BQM2G) has low disk space (/: 2.00% free) as of 2026-06-12T10:31:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "initech-macbook-6",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -816,12 +823,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-595a2c12c985d386",
+            "id": "F-05161ce2d010a08e",
             "company_id": "initech-003",
             "device_id": "RLD7WV7J82SH",
             "kind": "low_disk",
             "text": "initech-mac-4 (RLD7WV7J82SH) has low disk space (/: 2.00% free) as of 2026-06-12T08:50:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "initech-mac-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -849,21 +857,21 @@
         ],
         "proposals": [],
         "plan": [
-          "Query Initech\u2019s latest disk telemetry for devices below 10% free, then report the matching findings and count."
+          "Query Initech\u2019s latest disk telemetry for devices below 10% free and report the matching findings and count."
         ],
         "trace": [
           {
-            "run_id": "R-875c179b48b24398be8449a7503bd401",
+            "run_id": "R-74dfc315a0bf4551b23d4255a9b2d4d6",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query Initech\u2019s latest disk telemetry for devices below 10% free, then report the matching findings and count."
+                "Query Initech\u2019s latest disk telemetry for devices below 10% free and report the matching findings and count."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-875c179b48b24398be8449a7503bd401",
+            "run_id": "R-74dfc315a0bf4551b23d4255a9b2d4d6",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -880,13 +888,13 @@
             "ok": true
           },
           {
-            "run_id": "R-875c179b48b24398be8449a7503bd401",
+            "run_id": "R-74dfc315a0bf4551b23d4255a9b2d4d6",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-3b3937ed517e4d0d",
-                "F-29c3d7b05a0da67a",
-                "F-595a2c12c985d386"
+                "F-a36b8a0d60bb2eac",
+                "F-852ee4242a3bd4d3",
+                "F-05161ce2d010a08e"
               ],
               "status": "answered",
               "reason": "none"
@@ -907,14 +915,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 41,
+            "output_tokens": 40,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1505
+            "total_tokens": 1504
           },
           {
-            "input_tokens": 1523,
+            "input_tokens": 1522,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -927,26 +935,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1585
+            "total_tokens": 1584
           },
           {
-            "input_tokens": 2104,
+            "input_tokens": 2112,
             "input_tokens_details": {
-              "cache_write_tokens": 1441,
+              "cache_write_tokens": 1449,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1441
+                "ttl_30m_tokens": 1449
               }
             },
-            "output_tokens": 66,
+            "output_tokens": 64,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2170
+            "total_tokens": 2176
           }
         ],
-        "elapsed_seconds": 6.438
+        "elapsed_seconds": 6.183
       }
     },
     {
@@ -965,17 +973,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-0b32bf333a68452e8ec3673f44e94bbc",
+        "run_id": "R-1279bdcbf80a4c14b03b4a14e16e4cd2",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation on or before 2026-06-12T11:00:00Z. [F-4b704c7db647c39e]",
+        "answer": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation up to 2026-06-12. [F-a048b4e13f894f6e]",
         "findings": [
           {
-            "id": "F-4b704c7db647c39e",
+            "id": "F-a048b4e13f894f6e",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation on or before 2026-06-12T11:00:00Z.",
+            "text": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 0,
               "scanned_devices": 9,
@@ -1109,23 +1117,21 @@
         ],
         "proposals": [],
         "plan": [
-          "Query latest high-severity compliance failures for Acme laptops.",
-          "Return matching findings and the count summary."
+          "Query latest high-severity compliance failures for laptops and return findings with the count."
         ],
         "trace": [
           {
-            "run_id": "R-0b32bf333a68452e8ec3673f44e94bbc",
+            "run_id": "R-1279bdcbf80a4c14b03b4a14e16e4cd2",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query latest high-severity compliance failures for Acme laptops.",
-                "Return matching findings and the count summary."
+                "Query latest high-severity compliance failures for laptops and return findings with the count."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-0b32bf333a68452e8ec3673f44e94bbc",
+            "run_id": "R-1279bdcbf80a4c14b03b4a14e16e4cd2",
             "tool": "query_fleet",
             "arguments": {
               "kind": "compliance",
@@ -1142,11 +1148,11 @@
             "ok": true
           },
           {
-            "run_id": "R-0b32bf333a68452e8ec3673f44e94bbc",
+            "run_id": "R-1279bdcbf80a4c14b03b4a14e16e4cd2",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-4b704c7db647c39e"
+                "F-a048b4e13f894f6e"
               ],
               "status": "answered",
               "reason": "none"
@@ -1167,14 +1173,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 38,
+            "output_tokens": 34,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1567
+            "total_tokens": 1563
           },
           {
-            "input_tokens": 1585,
+            "input_tokens": 1581,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -1187,26 +1193,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1648
+            "total_tokens": 1644
           },
           {
-            "input_tokens": 1843,
+            "input_tokens": 1831,
             "input_tokens_details": {
-              "cache_write_tokens": 1114,
+              "cache_write_tokens": 1102,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1114
+                "ttl_30m_tokens": 1102
               }
             },
             "output_tokens": 38,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1881
+            "total_tokens": 1869
           }
         ],
-        "elapsed_seconds": 5.823
+        "elapsed_seconds": 6.986
       }
     },
     {
@@ -1224,17 +1230,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-0ae0740c68fc411782e5422cafab82bc",
+        "run_id": "R-3a0773c874cf41ec83941d154563403e",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation on or before 2026-06-12T10:57:00Z. [F-67a7f41556ad1b51]\n\nacme-macbook-1 (7VP16KHV88LM) runs macOS 13.6, below major version 15, as of 2026-06-12T10:41:00Z. [F-4874583d17600415]\n\nacme-macbook-2 (1LYSSFD074BB) runs macOS 14.5, below major version 15, as of 2026-06-12T09:47:00Z. [F-c5732b0f71f2c48a]\n\nacme-macbook-4 (MT7PJB7N5LRE) runs macOS 14.5, below major version 15, as of 2026-06-12T08:39:00Z. [F-92dcad73068ce553]\n\nacme-macbook-6 (XSU9UUDGU6AC) runs macOS 14.5, below major version 15, as of 2026-06-12T09:52:00Z. [F-8de6665bf2dc04d9]",
+        "answer": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation up to 2026-06-12. [F-997f292f34a7ea1a]\n\nacme-macbook-1 (7VP16KHV88LM) runs macOS 13.6, below major version 15, as of 2026-06-12T10:41:00Z. [F-61a52060d29aada3]\n\nacme-macbook-2 (1LYSSFD074BB) runs macOS 14.5, below major version 15, as of 2026-06-12T09:47:00Z. [F-477cb0678dda20d2]\n\nacme-macbook-4 (MT7PJB7N5LRE) runs macOS 14.5, below major version 15, as of 2026-06-12T08:39:00Z. [F-629a9f213035902b]\n\nacme-macbook-6 (XSU9UUDGU6AC) runs macOS 14.5, below major version 15, as of 2026-06-12T09:52:00Z. [F-17e79c317570a756]",
         "findings": [
           {
-            "id": "F-67a7f41556ad1b51",
+            "id": "F-997f292f34a7ea1a",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation on or before 2026-06-12T10:57:00Z.",
+            "text": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 4,
               "scanned_devices": 7,
@@ -1349,12 +1355,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-4874583d17600415",
+            "id": "F-61a52060d29aada3",
             "company_id": "acme-001",
             "device_id": "7VP16KHV88LM",
             "kind": "os_older",
             "text": "acme-macbook-1 (7VP16KHV88LM) runs macOS 13.6, below major version 15, as of 2026-06-12T10:41:00Z.",
             "values": {
+              "hostname": "acme-macbook-1",
               "version": "13.6",
               "major_limit": 15
             },
@@ -1374,12 +1381,13 @@
             "method": "macOS-only integer major-version comparison"
           },
           {
-            "id": "F-c5732b0f71f2c48a",
+            "id": "F-477cb0678dda20d2",
             "company_id": "acme-001",
             "device_id": "1LYSSFD074BB",
             "kind": "os_older",
             "text": "acme-macbook-2 (1LYSSFD074BB) runs macOS 14.5, below major version 15, as of 2026-06-12T09:47:00Z.",
             "values": {
+              "hostname": "acme-macbook-2",
               "version": "14.5",
               "major_limit": 15
             },
@@ -1399,12 +1407,13 @@
             "method": "macOS-only integer major-version comparison"
           },
           {
-            "id": "F-92dcad73068ce553",
+            "id": "F-629a9f213035902b",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "os_older",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) runs macOS 14.5, below major version 15, as of 2026-06-12T08:39:00Z.",
             "values": {
+              "hostname": "acme-macbook-4",
               "version": "14.5",
               "major_limit": 15
             },
@@ -1424,12 +1433,13 @@
             "method": "macOS-only integer major-version comparison"
           },
           {
-            "id": "F-8de6665bf2dc04d9",
+            "id": "F-17e79c317570a756",
             "company_id": "acme-001",
             "device_id": "XSU9UUDGU6AC",
             "kind": "os_older",
             "text": "acme-macbook-6 (XSU9UUDGU6AC) runs macOS 14.5, below major version 15, as of 2026-06-12T09:52:00Z.",
             "values": {
+              "hostname": "acme-macbook-6",
               "version": "14.5",
               "major_limit": 15
             },
@@ -1451,23 +1461,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Query Acme devices for macOS major versions below 15.",
+          "Query Acme devices running macOS below major version 15.",
           "Return the count and matching devices."
         ],
         "trace": [
           {
-            "run_id": "R-0ae0740c68fc411782e5422cafab82bc",
+            "run_id": "R-3a0773c874cf41ec83941d154563403e",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query Acme devices for macOS major versions below 15.",
+                "Query Acme devices running macOS below major version 15.",
                 "Return the count and matching devices."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-0ae0740c68fc411782e5422cafab82bc",
+            "run_id": "R-3a0773c874cf41ec83941d154563403e",
             "tool": "query_fleet",
             "arguments": {
               "kind": "os_older",
@@ -1484,15 +1494,15 @@
             "ok": true
           },
           {
-            "run_id": "R-0ae0740c68fc411782e5422cafab82bc",
+            "run_id": "R-3a0773c874cf41ec83941d154563403e",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-67a7f41556ad1b51",
-                "F-4874583d17600415",
-                "F-c5732b0f71f2c48a",
-                "F-92dcad73068ce553",
-                "F-8de6665bf2dc04d9"
+                "F-997f292f34a7ea1a",
+                "F-61a52060d29aada3",
+                "F-477cb0678dda20d2",
+                "F-629a9f213035902b",
+                "F-17e79c317570a756"
               ],
               "status": "answered",
               "reason": "none"
@@ -1536,23 +1546,23 @@
             "total_tokens": 1656
           },
           {
-            "input_tokens": 2299,
+            "input_tokens": 2329,
             "input_tokens_details": {
-              "cache_write_tokens": 1570,
+              "cache_write_tokens": 1600,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1570
+                "ttl_30m_tokens": 1600
               }
             },
-            "output_tokens": 85,
+            "output_tokens": 83,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2384
+            "total_tokens": 2412
           }
         ],
-        "elapsed_seconds": 6.917
+        "elapsed_seconds": 7.072
       }
     },
     {
@@ -1570,17 +1580,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-f46b316eb8c941ac9fbd9cc71f268083",
+        "run_id": "R-c5992fca395443dab03f9656ed0e088d",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 ram findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-e76384f807521558]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-cfe72ef31740528a]",
+        "answer": "1 device with persistent RAM use above the threshold across 10 devices, observed 2026-05-14 to 2026-06-12. [F-903c5086552da32b]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-53318f69720b4261]",
         "findings": [
           {
-            "id": "F-e76384f807521558",
+            "id": "F-903c5086552da32b",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "1 ram findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "1 device with persistent RAM use above the threshold across 10 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 1,
               "devices": 10,
@@ -4899,12 +4909,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-cfe72ef31740528a",
+            "id": "F-53318f69720b4261",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "persistent_ram",
             "text": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.",
             "values": {
+              "hostname": "acme-dell-9",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -5227,23 +5238,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Analyze historical RAM utilization using the requested criteria.",
-          "Return matching devices and the summary."
+          "Check historical RAM utilization against the requested thresholds.",
+          "Return matching devices and the observation window."
         ],
         "trace": [
           {
-            "run_id": "R-f46b316eb8c941ac9fbd9cc71f268083",
+            "run_id": "R-c5992fca395443dab03f9656ed0e088d",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Analyze historical RAM utilization using the requested criteria.",
-                "Return matching devices and the summary."
+                "Check historical RAM utilization against the requested thresholds.",
+                "Return matching devices and the observation window."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-f46b316eb8c941ac9fbd9cc71f268083",
+            "run_id": "R-c5992fca395443dab03f9656ed0e088d",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -5257,12 +5268,12 @@
             "ok": true
           },
           {
-            "run_id": "R-f46b316eb8c941ac9fbd9cc71f268083",
+            "run_id": "R-c5992fca395443dab03f9656ed0e088d",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-e76384f807521558",
-                "F-cfe72ef31740528a"
+                "F-903c5086552da32b",
+                "F-53318f69720b4261"
               ],
               "status": "answered",
               "reason": "none"
@@ -5283,14 +5294,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 34,
+            "output_tokens": 35,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1579
+            "total_tokens": 1580
           },
           {
-            "input_tokens": 1597,
+            "input_tokens": 1598,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -5303,26 +5314,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1647
+            "total_tokens": 1648
           },
           {
-            "input_tokens": 2082,
+            "input_tokens": 2086,
             "input_tokens_details": {
-              "cache_write_tokens": 1353,
+              "cache_write_tokens": 1357,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1353
+                "ttl_30m_tokens": 1357
               }
             },
-            "output_tokens": 44,
+            "output_tokens": 47,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2126
+            "total_tokens": 2133
           }
         ],
-        "elapsed_seconds": 6.972
+        "elapsed_seconds": 5.966
       }
     },
     {
@@ -5340,17 +5351,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-05fb9e104a7f4c7da1fb5aed6adf66ae",
+        "run_id": "R-fd1a675d387a414b86f375d0dc487b18",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "0 ram findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z. [F-467847897aeafac5]",
+        "answer": "0 devices with persistent RAM use above the threshold across 8 devices, observed 2026-05-14 to 2026-06-12. [F-18307d106467b4ab]",
         "findings": [
           {
-            "id": "F-467847897aeafac5",
+            "id": "F-18307d106467b4ab",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "0 ram findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z.",
+            "text": "0 devices with persistent RAM use above the threshold across 8 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 0,
               "devices": 8,
@@ -8011,23 +8022,21 @@
         ],
         "proposals": [],
         "plan": [
-          "Check Globex\u2019s historical RAM utilization against the requested thresholds.",
-          "Return matching devices and the observation window."
+          "Check historical RAM persistence across Globex and return matching devices with the summary."
         ],
         "trace": [
           {
-            "run_id": "R-05fb9e104a7f4c7da1fb5aed6adf66ae",
+            "run_id": "R-fd1a675d387a414b86f375d0dc487b18",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check Globex\u2019s historical RAM utilization against the requested thresholds.",
-                "Return matching devices and the observation window."
+                "Check historical RAM persistence across Globex and return matching devices with the summary."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-05fb9e104a7f4c7da1fb5aed6adf66ae",
+            "run_id": "R-fd1a675d387a414b86f375d0dc487b18",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -8041,11 +8050,11 @@
             "ok": true
           },
           {
-            "run_id": "R-05fb9e104a7f4c7da1fb5aed6adf66ae",
+            "run_id": "R-fd1a675d387a414b86f375d0dc487b18",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-467847897aeafac5"
+                "F-18307d106467b4ab"
               ],
               "status": "answered",
               "reason": "none"
@@ -8066,14 +8075,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 38,
+            "output_tokens": 33,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1542
+            "total_tokens": 1537
           },
           {
-            "input_tokens": 1560,
+            "input_tokens": 1555,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -8086,26 +8095,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1610
+            "total_tokens": 1605
           },
           {
-            "input_tokens": 1764,
+            "input_tokens": 1751,
             "input_tokens_details": {
-              "cache_write_tokens": 1075,
+              "cache_write_tokens": 1062,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1075
+                "ttl_30m_tokens": 1062
               }
             },
-            "output_tokens": 35,
+            "output_tokens": 36,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1799
+            "total_tokens": 1787
           }
         ],
-        "elapsed_seconds": 5.371
+        "elapsed_seconds": 5.781
       }
     },
     {
@@ -8123,17 +8132,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-fc18dc6d216b43f7bf831931177c6d02",
+        "run_id": "R-afb114ed25874941aae309720a41a356",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 2 devices have no battery reading in their latest snapshot; missing is not healthy. [F-b7aa48fbe32ffb98]\n\nacme-macbook-1 (7VP16KHV88LM) reports battery condition Service Recommended as of 2026-06-12T10:41:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-c9ab89227afc8e36]\n\nacme-thinkpad-8 (8NM23J95R5I6) reports battery condition Service Recommended as of 2026-06-12T09:02:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-f58d9a3e22f3c834]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-da76e805d39c9403]",
+        "answer": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 2 devices have no battery reading in their latest snapshot; missing is not healthy. [F-78dac64d22fe064a]\n\nacme-macbook-1 (7VP16KHV88LM) reports battery condition Service Recommended as of 2026-06-12T10:41:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-031c3d1f012d0595]\n\nacme-thinkpad-8 (8NM23J95R5I6) reports battery condition Service Recommended as of 2026-06-12T09:02:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-2bc9ab68c1168e87]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-d4fb49cf76d3b275]",
         "findings": [
           {
-            "id": "F-b7aa48fbe32ffb98",
+            "id": "F-78dac64d22fe064a",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 2 devices have no battery reading in their latest snapshot; missing is not healthy.",
+            "text": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 2 devices have no battery reading in their latest snapshot; missing is not healthy.",
             "values": {
               "count": 3,
               "scanned_devices": 10,
@@ -8277,12 +8286,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-c9ab89227afc8e36",
+            "id": "F-031c3d1f012d0595",
             "company_id": "acme-001",
             "device_id": "7VP16KHV88LM",
             "kind": "battery_service",
             "text": "acme-macbook-1 (7VP16KHV88LM) reports battery condition Service Recommended as of 2026-06-12T10:41:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-macbook-1",
               "condition": "Service Recommended",
               "full_charge_capacity": 4166
             },
@@ -8301,12 +8311,13 @@
             "method": "latest snapshot per device"
           },
           {
-            "id": "F-f58d9a3e22f3c834",
+            "id": "F-2bc9ab68c1168e87",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "battery_service",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) reports battery condition Service Recommended as of 2026-06-12T09:02:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "condition": "Service Recommended",
               "full_charge_capacity": 3872
             },
@@ -8325,12 +8336,13 @@
             "method": "latest snapshot per device"
           },
           {
-            "id": "F-da76e805d39c9403",
+            "id": "F-d4fb49cf76d3b275",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "battery_service",
             "text": "acme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-dell-9",
               "condition": "Service Recommended",
               "full_charge_capacity": 3262
             },
@@ -8351,21 +8363,21 @@
         ],
         "proposals": [],
         "plan": [
-          "Query latest battery service findings and return matching devices with the count."
+          "Query the latest battery condition observations and return matching devices with the count."
         ],
         "trace": [
           {
-            "run_id": "R-fc18dc6d216b43f7bf831931177c6d02",
+            "run_id": "R-afb114ed25874941aae309720a41a356",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query latest battery service findings and return matching devices with the count."
+                "Query the latest battery condition observations and return matching devices with the count."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-fc18dc6d216b43f7bf831931177c6d02",
+            "run_id": "R-afb114ed25874941aae309720a41a356",
             "tool": "query_fleet",
             "arguments": {
               "kind": "battery_service",
@@ -8382,14 +8394,14 @@
             "ok": true
           },
           {
-            "run_id": "R-fc18dc6d216b43f7bf831931177c6d02",
+            "run_id": "R-afb114ed25874941aae309720a41a356",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-b7aa48fbe32ffb98",
-                "F-c9ab89227afc8e36",
-                "F-f58d9a3e22f3c834",
-                "F-da76e805d39c9403"
+                "F-78dac64d22fe064a",
+                "F-031c3d1f012d0595",
+                "F-2bc9ab68c1168e87",
+                "F-d4fb49cf76d3b275"
               ],
               "status": "answered",
               "reason": "none"
@@ -8410,14 +8422,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 31,
+            "output_tokens": 32,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1566
+            "total_tokens": 1567
           },
           {
-            "input_tokens": 1584,
+            "input_tokens": 1585,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -8430,26 +8442,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1646
+            "total_tokens": 1647
           },
           {
-            "input_tokens": 2199,
+            "input_tokens": 2221,
             "input_tokens_details": {
-              "cache_write_tokens": 1470,
+              "cache_write_tokens": 1492,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1470
+                "ttl_30m_tokens": 1492
               }
             },
             "output_tokens": 74,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2273
+            "total_tokens": 2295
           }
         ],
-        "elapsed_seconds": 6.195
+        "elapsed_seconds": 6.572
       }
     },
     {
@@ -8467,17 +8479,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-d6bfa4d1f0a441d19e18f3424a202143",
+        "run_id": "R-26e08d6e013948bca29fe9309264951a",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "5 compliance findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-aea3395bc7412861]\n\nacme-macbook-2 (1LYSSFD074BB): screen_lock changed from pass at 2026-05-21T09:45:00Z to fail at 2026-05-22T09:41:00Z. [F-71a6ce9597c1f997]\n\nacme-macbook-4 (MT7PJB7N5LRE): screen_lock changed from pass at 2026-05-27T10:03:00Z to fail at 2026-05-28T09:32:00Z. [F-67903aa62d03850a]\n\nacme-thinkpad-8 (8NM23J95R5I6): screen_lock changed from pass at 2026-05-29T11:16:00Z to fail at 2026-05-30T08:38:00Z. [F-55b02d76e17d4c63]\n\nacme-mac-5 (DLT35MHGTH2D): screen_lock changed from pass at 2026-05-31T09:37:00Z to fail at 2026-06-01T10:14:00Z. [F-aedfb5ca39240476]\n\nacme-macbook-3 (DSYPSES7SKBB): screen_lock changed from pass at 2026-05-31T10:31:00Z to fail at 2026-06-01T10:20:00Z. [F-62abc24b26c7d8e3]",
+        "answer": "5 compliance status changes across 10 devices, observed 2026-05-14 to 2026-06-12. [F-e61a9092422cbf0c]\n\nacme-macbook-2 (1LYSSFD074BB): screen_lock changed from pass at 2026-05-21T09:45:00Z to fail at 2026-05-22T09:41:00Z. [F-d49e1bf549460984]\n\nacme-macbook-4 (MT7PJB7N5LRE): screen_lock changed from pass at 2026-05-27T10:03:00Z to fail at 2026-05-28T09:32:00Z. [F-49a973ac6eb593e4]\n\nacme-thinkpad-8 (8NM23J95R5I6): screen_lock changed from pass at 2026-05-29T11:16:00Z to fail at 2026-05-30T08:38:00Z. [F-d1fe864cc105ad83]\n\nacme-mac-5 (DLT35MHGTH2D): screen_lock changed from pass at 2026-05-31T09:37:00Z to fail at 2026-06-01T10:14:00Z. [F-11dfcbc35f08b36c]\n\nacme-macbook-3 (DSYPSES7SKBB): screen_lock changed from pass at 2026-05-31T10:31:00Z to fail at 2026-06-01T10:20:00Z. [F-90c07cf468e85391]",
         "findings": [
           {
-            "id": "F-aea3395bc7412861",
+            "id": "F-e61a9092422cbf0c",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "5 compliance findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "5 compliance status changes across 10 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 5,
               "devices": 10,
@@ -8488,7 +8500,7 @@
                 "end": null,
                 "threshold": null,
                 "fraction": 0.8,
-                "min_observations": 7
+                "min_observations": 2
               }
             },
             "evidence": [
@@ -11796,12 +11808,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-71a6ce9597c1f997",
+            "id": "F-d49e1bf549460984",
             "company_id": "acme-001",
             "device_id": "1LYSSFD074BB",
             "kind": "compliance_drift",
             "text": "acme-macbook-2 (1LYSSFD074BB): screen_lock changed from pass at 2026-05-21T09:45:00Z to fail at 2026-05-22T09:41:00Z.",
             "values": {
+              "hostname": "acme-macbook-2",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11831,12 +11844,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-67903aa62d03850a",
+            "id": "F-49a973ac6eb593e4",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "compliance_drift",
             "text": "acme-macbook-4 (MT7PJB7N5LRE): screen_lock changed from pass at 2026-05-27T10:03:00Z to fail at 2026-05-28T09:32:00Z.",
             "values": {
+              "hostname": "acme-macbook-4",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11866,12 +11880,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-55b02d76e17d4c63",
+            "id": "F-d1fe864cc105ad83",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "compliance_drift",
             "text": "acme-thinkpad-8 (8NM23J95R5I6): screen_lock changed from pass at 2026-05-29T11:16:00Z to fail at 2026-05-30T08:38:00Z.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11901,12 +11916,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-aedfb5ca39240476",
+            "id": "F-11dfcbc35f08b36c",
             "company_id": "acme-001",
             "device_id": "DLT35MHGTH2D",
             "kind": "compliance_drift",
             "text": "acme-mac-5 (DLT35MHGTH2D): screen_lock changed from pass at 2026-05-31T09:37:00Z to fail at 2026-06-01T10:14:00Z.",
             "values": {
+              "hostname": "acme-mac-5",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11936,12 +11952,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-62abc24b26c7d8e3",
+            "id": "F-90c07cf468e85391",
             "company_id": "acme-001",
             "device_id": "DSYPSES7SKBB",
             "kind": "compliance_drift",
             "text": "acme-macbook-3 (DSYPSES7SKBB): screen_lock changed from pass at 2026-05-31T10:31:00Z to fail at 2026-06-01T10:20:00Z.",
             "values": {
+              "hostname": "acme-macbook-3",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11973,23 +11990,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Analyze Acme compliance trends across the available 30-day history.",
-          "Return the summary and relevant change findings."
+          "Compare compliance observations across Acme\u2019s 30-day history.",
+          "Return the recorded changes and summary."
         ],
         "trace": [
           {
-            "run_id": "R-d6bfa4d1f0a441d19e18f3424a202143",
+            "run_id": "R-26e08d6e013948bca29fe9309264951a",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Analyze Acme compliance trends across the available 30-day history.",
-                "Return the summary and relevant change findings."
+                "Compare compliance observations across Acme\u2019s 30-day history.",
+                "Return the recorded changes and summary."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-d6bfa4d1f0a441d19e18f3424a202143",
+            "run_id": "R-26e08d6e013948bca29fe9309264951a",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "compliance",
@@ -11998,21 +12015,21 @@
               "end": null,
               "threshold": null,
               "fraction": 0.8,
-              "min_observations": 7
+              "min_observations": 2
             },
             "ok": true
           },
           {
-            "run_id": "R-d6bfa4d1f0a441d19e18f3424a202143",
+            "run_id": "R-26e08d6e013948bca29fe9309264951a",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-aea3395bc7412861",
-                "F-71a6ce9597c1f997",
-                "F-67903aa62d03850a",
-                "F-55b02d76e17d4c63",
-                "F-aedfb5ca39240476",
-                "F-62abc24b26c7d8e3"
+                "F-e61a9092422cbf0c",
+                "F-d49e1bf549460984",
+                "F-49a973ac6eb593e4",
+                "F-d1fe864cc105ad83",
+                "F-11dfcbc35f08b36c",
+                "F-90c07cf468e85391"
               ],
               "status": "answered",
               "reason": "none"
@@ -12033,14 +12050,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 39,
+            "output_tokens": 37,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1570
+            "total_tokens": 1568
           },
           {
-            "input_tokens": 1588,
+            "input_tokens": 1586,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -12053,26 +12070,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1639
+            "total_tokens": 1637
           },
           {
-            "input_tokens": 2413,
+            "input_tokens": 2441,
             "input_tokens_details": {
-              "cache_write_tokens": 1684,
+              "cache_write_tokens": 1712,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1684
+                "ttl_30m_tokens": 1712
               }
             },
-            "output_tokens": 97,
+            "output_tokens": 92,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2510
+            "total_tokens": 2533
           }
         ],
-        "elapsed_seconds": 6.52
+        "elapsed_seconds": 6.994
       }
     },
     {
@@ -12090,17 +12107,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-fb4ac8b200784219bc0f61a93b277f8d",
+        "run_id": "R-d9f6d3c02acb44cba1b36dac2f4a3b0f",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation on or before 2026-06-12T10:47:00Z. [F-3fa9bf7bef88d249]\n\nglobex-macbook-4 (Q1AFVLH3YV33) has uTorrent 3.6 as of 2026-06-12T08:34:00Z. Presence alone does not establish a policy violation. [F-ddf66340a68c136b]",
+        "answer": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation up to 2026-06-12. [F-981a2bfd747d790e]\n\nglobex-macbook-4 (Q1AFVLH3YV33) has uTorrent 3.6 as of 2026-06-12T08:34:00Z. Presence alone does not establish a policy violation. [F-905ccc3fad097829]",
         "findings": [
           {
-            "id": "F-3fa9bf7bef88d249",
+            "id": "F-981a2bfd747d790e",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation on or before 2026-06-12T10:47:00Z.",
+            "text": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 1,
               "scanned_devices": 8,
@@ -12220,12 +12237,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-ddf66340a68c136b",
+            "id": "F-905ccc3fad097829",
             "company_id": "globex-002",
             "device_id": "Q1AFVLH3YV33",
             "kind": "software",
             "text": "globex-macbook-4 (Q1AFVLH3YV33) has uTorrent 3.6 as of 2026-06-12T08:34:00Z. Presence alone does not establish a policy violation.",
             "values": {
+              "hostname": "globex-macbook-4",
               "software": [
                 {
                   "name": "uTorrent",
@@ -12251,21 +12269,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Query latest Globex observations for uTorrent and report matching devices with the count."
+          "Query latest observations for exact software name uTorrent.",
+          "Return matching findings and count summary."
         ],
         "trace": [
           {
-            "run_id": "R-fb4ac8b200784219bc0f61a93b277f8d",
+            "run_id": "R-d9f6d3c02acb44cba1b36dac2f4a3b0f",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Query latest Globex observations for uTorrent and report matching devices with the count."
+                "Query latest observations for exact software name uTorrent.",
+                "Return matching findings and count summary."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-fb4ac8b200784219bc0f61a93b277f8d",
+            "run_id": "R-d9f6d3c02acb44cba1b36dac2f4a3b0f",
             "tool": "query_fleet",
             "arguments": {
               "kind": "software",
@@ -12282,12 +12302,12 @@
             "ok": true
           },
           {
-            "run_id": "R-fb4ac8b200784219bc0f61a93b277f8d",
+            "run_id": "R-d9f6d3c02acb44cba1b36dac2f4a3b0f",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-3fa9bf7bef88d249",
-                "F-ddf66340a68c136b"
+                "F-981a2bfd747d790e",
+                "F-905ccc3fad097829"
               ],
               "status": "answered",
               "reason": "none"
@@ -12308,14 +12328,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 34,
+            "output_tokens": 35,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1525
+            "total_tokens": 1526
           },
           {
-            "input_tokens": 1543,
+            "input_tokens": 1544,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -12328,7 +12348,7 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1605
+            "total_tokens": 1606
           },
           {
             "input_tokens": 1915,
@@ -12340,14 +12360,14 @@
                 "ttl_30m_tokens": 1226
               }
             },
-            "output_tokens": 48,
+            "output_tokens": 45,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1963
+            "total_tokens": 1960
           }
         ],
-        "elapsed_seconds": 6.183
+        "elapsed_seconds": 6.56
       }
     },
     {
@@ -12363,7 +12383,7 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-72724e4b23bc41dc96227a9ff702fe95",
+        "run_id": "R-2bd54035596e4a23ac6cb54ce074b632",
         "company_id": "acme-001",
         "status": "refused",
         "answer": "This request is outside the authorized company scope.",
@@ -12374,7 +12394,7 @@
         "model": "gpt-6.2-sol",
         "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
         "usage": [],
-        "elapsed_seconds": 0.008
+        "elapsed_seconds": 0.005
       }
     },
     {
@@ -12390,471 +12410,31 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-074637da7a8740809e5160ced3dbd301",
+        "run_id": "R-7522ba4187ae4df8860852b56aec7a85",
         "company_id": "acme-001",
         "status": "insufficient_data",
-        "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.\n\n1 battery_eol findings across 1 devices, observed from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z. [F-1412d46fe5689e39]\n\nacme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-1f10cce6ae644fa9]",
-        "findings": [
-          {
-            "id": "F-1412d46fe5689e39",
-            "company_id": "acme-001",
-            "device_id": null,
-            "kind": "trend_summary",
-            "text": "1 battery_eol findings across 1 devices, observed from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z.",
-            "values": {
-              "finding_count": 1,
-              "devices": 1,
-              "parameters": {
-                "kind": "battery_eol",
-                "device_id": "7VP16KHV88LM",
-                "start": null,
-                "end": null,
-                "threshold": null,
-                "fraction": 0.8,
-                "min_observations": 7
-              }
-            },
-            "evidence": [
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 31,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-14T11:09:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 32,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-15T11:24:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 33,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-16T09:11:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 34,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-17T09:42:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 35,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-18T10:30:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 36,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-19T08:53:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 37,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-20T11:18:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 38,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-21T09:52:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 39,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-22T09:42:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 40,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-23T09:35:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 41,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-24T08:48:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 42,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-25T08:55:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 43,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-26T08:53:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 44,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-27T09:51:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 45,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-28T11:28:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 46,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-29T09:23:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 47,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-30T09:16:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 48,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-31T09:02:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 49,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-01T08:57:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 50,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-02T08:34:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 51,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-03T09:19:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 52,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-04T09:14:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 53,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-05T09:39:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 54,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-06T10:03:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 55,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-07T09:52:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 56,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-08T10:04:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 57,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-09T11:05:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 58,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-10T11:17:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 59,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-11T10:28:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 60,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-12T10:41:00Z",
-                "fields": [
-                  "collected_at",
-                  "battery"
-                ]
-              }
-            ],
-            "method": "Tenant-scoped window; see individual findings for calculations"
-          },
-          {
-            "id": "F-1f10cce6ae644fa9",
-            "company_id": "acme-001",
-            "device_id": "7VP16KHV88LM",
-            "kind": "battery_eol_risk",
-            "text": "acme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
-            "values": {
-              "observed_days": 30,
-              "span_days": 30,
-              "window_start": "2026-05-14",
-              "window_end": "2026-06-12",
-              "start": "2026-05-14T11:09:00Z",
-              "end": "2026-06-12T10:41:00Z",
-              "signals": {
-                "service_condition": true,
-                "capacity_decline": true,
-                "high_cycle_count": true
-              },
-              "signals_met": 3,
-              "latest_condition": "Service Recommended",
-              "service_days": 14,
-              "battery_days": 30,
-              "first_capacity": 4348,
-              "last_capacity": 4166,
-              "capacity_drop_percent": 4.185832566697332,
-              "latest_cycle_count": 1049,
-              "cycle_limit": 1000,
-              "capacity_drop_threshold_percent": 2.0
-            },
-            "evidence": [
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 31,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-14T11:09:00Z",
-                "fields": [
-                  "battery.condition",
-                  "battery.full_charge_capacity",
-                  "battery.cycle_count"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 47,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-05-30T09:16:00Z",
-                "fields": [
-                  "battery.condition",
-                  "battery.full_charge_capacity",
-                  "battery.cycle_count"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 60,
-                "company_id": "acme-001",
-                "device_id": "7VP16KHV88LM",
-                "collected_at": "2026-06-12T10:41:00Z",
-                "fields": [
-                  "battery.condition",
-                  "battery.full_charge_capacity",
-                  "battery.cycle_count"
-                ]
-              }
-            ],
-            "method": "At least 2 of: latest condition Service Recommended; full-charge capacity decline >= 2% first-to-last; latest cycle count >= 1000"
-          }
-        ],
+        "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.",
+        "findings": [],
         "proposals": [],
         "plan": [
-          "Check battery end-of-life risk signals and report whether the telemetry supports an exact prediction."
+          "Check whether the requested exact prediction is supported and report the evidence limitation."
         ],
         "trace": [
           {
-            "run_id": "R-074637da7a8740809e5160ced3dbd301",
+            "run_id": "R-7522ba4187ae4df8860852b56aec7a85",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check battery end-of-life risk signals and report whether the telemetry supports an exact prediction."
+                "Check whether the requested exact prediction is supported and report the evidence limitation."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-074637da7a8740809e5160ced3dbd301",
-            "tool": "analyze_trends",
-            "arguments": {
-              "kind": "battery_eol",
-              "device_id": "7VP16KHV88LM",
-              "start": null,
-              "end": null,
-              "threshold": null,
-              "fraction": 0.8,
-              "min_observations": 7
-            },
-            "ok": true
-          },
-          {
-            "run_id": "R-074637da7a8740809e5160ced3dbd301",
+            "run_id": "R-7522ba4187ae4df8860852b56aec7a85",
             "tool": "finish",
             "arguments": {
-              "finding_ids": [
-                "F-1412d46fe5689e39",
-                "F-1f10cce6ae644fa9"
-              ],
+              "finding_ids": [],
               "status": "insufficient_data",
               "reason": "insufficient_evidence"
             },
@@ -12874,14 +12454,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 35,
+            "output_tokens": 32,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1574
+            "total_tokens": 1571
           },
           {
-            "input_tokens": 1592,
+            "input_tokens": 1589,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -12890,30 +12470,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 58,
+            "output_tokens": 30,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1650
-          },
-          {
-            "input_tokens": 2160,
-            "input_tokens_details": {
-              "cache_write_tokens": 1431,
-              "cached_tokens": 0,
-              "cache_write_tokens_details": {
-                "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1431
-              }
-            },
-            "output_tokens": 55,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 2215
+            "total_tokens": 1619
           }
         ],
-        "elapsed_seconds": 6.641
+        "elapsed_seconds": 4.341
       }
     },
     {
@@ -12929,30 +12493,28 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-18147fa906db41b3b1902c897cfa7292",
+        "run_id": "R-cfcc573bfa554c7f9181c54a7174c6a5",
         "company_id": "globex-002",
         "status": "insufficient_data",
         "answer": "The supplied telemetry does not include the policy or compatibility information needed for that conclusion or action.",
         "findings": [],
         "proposals": [],
         "plan": [
-          "Check whether available telemetry can establish Globex\u2019s software policy.",
-          "Report any policy evidence gap."
+          "Check whether available telemetry can establish Globex policy, then report the evidence limit."
         ],
         "trace": [
           {
-            "run_id": "R-18147fa906db41b3b1902c897cfa7292",
+            "run_id": "R-cfcc573bfa554c7f9181c54a7174c6a5",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check whether available telemetry can establish Globex\u2019s software policy.",
-                "Report any policy evidence gap."
+                "Check whether available telemetry can establish Globex policy, then report the evidence limit."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-18147fa906db41b3b1902c897cfa7292",
+            "run_id": "R-cfcc573bfa554c7f9181c54a7174c6a5",
             "tool": "finish",
             "arguments": {
               "finding_ids": [],
@@ -12975,14 +12537,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 36,
+            "output_tokens": 34,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1524
+            "total_tokens": 1522
           },
           {
-            "input_tokens": 1542,
+            "input_tokens": 1540,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -12995,10 +12557,10 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1570
+            "total_tokens": 1568
           }
         ],
-        "elapsed_seconds": 3.678
+        "elapsed_seconds": 3.783
       }
     },
     {
@@ -13017,17 +12579,49 @@
         "proposal_action": true
       },
       "response": {
-        "run_id": "R-145b816f45934f31ae0eeb771661e7e8",
+        "run_id": "R-1f6526d4168c4cadba51791ef9993ecf",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:39:00Z. [F-b43cbddee0ac21be]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-660bd043ee99474d]\n\nProposal P-84b58127e0b46131b16358f5: open_remediation_ticket for MT7PJB7N5LRE \u2014 pending, simulation only; separate administrator approval required.",
+        "answer": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-191f574a4c8d063b]\n\n1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-8bc7b73e47f5bbbd]\n\nProposal P-3c4ccb5dd8f61458a7907f14: open_remediation_ticket for MT7PJB7N5LRE \u2014 pending, simulation only; separate administrator approval required.",
         "findings": [
           {
-            "id": "F-b43cbddee0ac21be",
+            "id": "F-191f574a4c8d063b",
+            "company_id": "acme-001",
+            "device_id": "MT7PJB7N5LRE",
+            "kind": "low_disk",
+            "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
+            "values": {
+              "hostname": "acme-macbook-4",
+              "volumes": [
+                {
+                  "mount_point": "/",
+                  "free_percent": 2.0000000000436557,
+                  "available_bytes": 10995116278,
+                  "size_bytes": 549755813888
+                }
+              ],
+              "threshold_percent": 10
+            },
+            "evidence": [
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 240,
+                "company_id": "acme-001",
+                "device_id": "MT7PJB7N5LRE",
+                "collected_at": "2026-06-12T08:39:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              }
+            ],
+            "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
+          },
+          {
+            "id": "F-8bc7b73e47f5bbbd",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:39:00Z.",
+            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 1,
               "scanned_devices": 1,
@@ -13061,47 +12655,16 @@
               }
             ],
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
-          },
-          {
-            "id": "F-660bd043ee99474d",
-            "company_id": "acme-001",
-            "device_id": "MT7PJB7N5LRE",
-            "kind": "low_disk",
-            "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
-            "values": {
-              "volumes": [
-                {
-                  "mount_point": "/",
-                  "free_percent": 2.0000000000436557,
-                  "available_bytes": 10995116278,
-                  "size_bytes": 549755813888
-                }
-              ],
-              "threshold_percent": 10
-            },
-            "evidence": [
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 240,
-                "company_id": "acme-001",
-                "device_id": "MT7PJB7N5LRE",
-                "collected_at": "2026-06-12T08:39:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              }
-            ],
-            "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           }
         ],
         "proposals": [
           {
             "action": "open_remediation_ticket",
             "company_id": "acme-001",
-            "created_at": "2026-11-20T15:07:19.431086+00:00",
+            "created_at": "2026-11-20T15:41:17.186040+00:00",
             "device_id": "MT7PJB7N5LRE",
             "employee_id": null,
-            "expires_at": "2026-11-21T15:07:19.431100+00:00",
+            "expires_at": "2026-11-21T15:41:17.186053+00:00",
             "findings": [
               {
                 "company_id": "acme-001",
@@ -13118,11 +12681,12 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-660bd043ee99474d",
+                "id": "F-191f574a4c8d063b",
                 "kind": "low_disk",
                 "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold",
                 "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
                 "values": {
+                  "hostname": "acme-macbook-4",
                   "threshold_percent": 10,
                   "volumes": [
                     {
@@ -13135,35 +12699,36 @@
                 }
               }
             ],
-            "id": "P-84b58127e0b46131b16358f5",
+            "hostname": "acme-macbook-4",
+            "id": "P-3c4ccb5dd8f61458a7907f14",
             "justification": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "mode": "simulation",
-            "run_id": "R-145b816f45934f31ae0eeb771661e7e8",
+            "run_id": "R-1f6526d4168c4cadba51791ef9993ecf",
             "scope": "Record a simulated action; no external delivery or system modification",
             "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-            "digest": "2845777d8ec6913f0b9fd230b66c6b69ecb61316b1d5250baec4bd5afff6ce38",
+            "digest": "e189c92d0de339504fb63b6ffb3c5c450cc845db7e0b1bcb17c78b96b29cfb96",
             "status": "pending",
             "decided_by": null
           }
         ],
         "plan": [
-          "Check latest disk telemetry against the default threshold.",
-          "If below 10% free, propose one simulated remediation ticket and report the findings."
+          "Check the device against the default low-disk policy.",
+          "If free space is below 10%, propose one simulated remediation ticket and report the result."
         ],
         "trace": [
           {
-            "run_id": "R-145b816f45934f31ae0eeb771661e7e8",
+            "run_id": "R-1f6526d4168c4cadba51791ef9993ecf",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check latest disk telemetry against the default threshold.",
-                "If below 10% free, propose one simulated remediation ticket and report the findings."
+                "Check the device against the default low-disk policy.",
+                "If free space is below 10%, propose one simulated remediation ticket and report the result."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-145b816f45934f31ae0eeb771661e7e8",
+            "run_id": "R-1f6526d4168c4cadba51791ef9993ecf",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -13180,24 +12745,24 @@
             "ok": true
           },
           {
-            "run_id": "R-145b816f45934f31ae0eeb771661e7e8",
+            "run_id": "R-1f6526d4168c4cadba51791ef9993ecf",
             "tool": "propose_action",
             "arguments": {
               "action": "open_remediation_ticket",
               "device_id": "MT7PJB7N5LRE",
               "finding_ids": [
-                "F-660bd043ee99474d"
+                "F-191f574a4c8d063b"
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-145b816f45934f31ae0eeb771661e7e8",
+            "run_id": "R-1f6526d4168c4cadba51791ef9993ecf",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-b43cbddee0ac21be",
-                "F-660bd043ee99474d"
+                "F-191f574a4c8d063b",
+                "F-8bc7b73e47f5bbbd"
               ],
               "status": "answered",
               "reason": "none"
@@ -13218,62 +12783,62 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 44,
+            "output_tokens": 47,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1759
+            "total_tokens": 1762
           },
           {
-            "input_tokens": 1777,
+            "input_tokens": 1780,
             "input_tokens_details": {
-              "cache_write_tokens": 1048,
+              "cache_write_tokens": 1051,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1048
+                "ttl_30m_tokens": 1051
               }
             },
             "output_tokens": 70,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1847
+            "total_tokens": 1850
           },
           {
-            "input_tokens": 2203,
+            "input_tokens": 2214,
             "input_tokens_details": {
-              "cache_write_tokens": 426,
-              "cached_tokens": 1048,
+              "cache_write_tokens": 434,
+              "cached_tokens": 1051,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 426
+                "ttl_30m_tokens": 434
               }
             },
-            "output_tokens": 49,
+            "output_tokens": 52,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2252
+            "total_tokens": 2266
           },
           {
-            "input_tokens": 2354,
+            "input_tokens": 2370,
             "input_tokens_details": {
-              "cache_write_tokens": 151,
-              "cached_tokens": 1474,
+              "cache_write_tokens": 156,
+              "cached_tokens": 1485,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 151
+                "ttl_30m_tokens": 156
               }
             },
-            "output_tokens": 46,
+            "output_tokens": 52,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2400
+            "total_tokens": 2422
           }
         ],
-        "elapsed_seconds": 7.513
+        "elapsed_seconds": 7.38
       }
     },
     {
@@ -13291,343 +12856,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-3876e1816a9e43928442277cbeff1ad9",
+        "run_id": "R-0fb5be9179c54ebab1df1aa4ccd08968",
         "company_id": "initech-003",
         "status": "answered",
-        "answer": "initech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations. [F-eda270eaff355498]\n\n1 disk findings across 7 devices, observed from 2026-05-14T09:19:00Z to 2026-06-12T10:57:00Z. [F-29e222bdb8545780]",
+        "answer": "1 volume persistently low on storage across 7 devices, observed 2026-05-14 to 2026-06-12. [F-9aaa2e9b6964146f]\n\ninitech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations. [F-649380f7814c21e0]",
         "findings": [
           {
-            "id": "F-eda270eaff355498",
-            "company_id": "initech-003",
-            "device_id": "RLD7WV7J82SH",
-            "kind": "persistent_disk",
-            "text": "initech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations.",
-            "values": {
-              "observed_days": 30,
-              "span_days": 30,
-              "window_start": "2026-05-14",
-              "window_end": "2026-06-12",
-              "start": "2026-05-14T09:33:00Z",
-              "end": "2026-06-12T08:50:00Z",
-              "component": "/",
-              "mean_percent": 4.378784971995628,
-              "first_percent": 7.488315909358789,
-              "last_percent": 2.0000000000436557,
-              "hits": 30,
-              "threshold": 10.0,
-              "fraction": 0.8,
-              "min_observations": 7
-            },
-            "evidence": [
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 631,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-14T09:33:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 632,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-15T10:05:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 633,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-16T08:59:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 634,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-17T11:09:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 635,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-18T09:51:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 636,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-19T10:42:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 637,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-20T08:39:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 638,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-21T10:55:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 639,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-22T10:03:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 640,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-23T10:31:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 641,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-24T11:29:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 642,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-25T08:34:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 643,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-26T08:37:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 644,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-27T10:09:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 645,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-28T09:33:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 646,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-29T09:33:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 647,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-30T11:29:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 648,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-05-31T09:34:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 649,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-01T09:23:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 650,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-02T10:24:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 651,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-03T09:00:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 652,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-04T10:15:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 653,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-05T10:07:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 654,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-06T10:09:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 655,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-07T09:44:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 656,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-08T09:58:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 657,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-09T11:30:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 658,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-10T08:42:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 659,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-11T10:42:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              },
-              {
-                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-                "source_line": 660,
-                "company_id": "initech-003",
-                "device_id": "RLD7WV7J82SH",
-                "collected_at": "2026-06-12T08:50:00Z",
-                "fields": [
-                  "disk_volumes"
-                ]
-              }
-            ],
-            "method": "Last observation per UTC day; missing days count against persistence; compare explicit thresholds"
-          },
-          {
-            "id": "F-29e222bdb8545780",
+            "id": "F-9aaa2e9b6964146f",
             "company_id": "initech-003",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "1 disk findings across 7 devices, observed from 2026-05-14T09:19:00Z to 2026-06-12T10:57:00Z.",
+            "text": "1 volume persistently low on storage across 7 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 1,
               "devices": 7,
@@ -15954,27 +15193,352 @@
               }
             ],
             "method": "Tenant-scoped window; see individual findings for calculations"
+          },
+          {
+            "id": "F-649380f7814c21e0",
+            "company_id": "initech-003",
+            "device_id": "RLD7WV7J82SH",
+            "kind": "persistent_disk",
+            "text": "initech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations.",
+            "values": {
+              "hostname": "initech-mac-4",
+              "observed_days": 30,
+              "span_days": 30,
+              "window_start": "2026-05-14",
+              "window_end": "2026-06-12",
+              "start": "2026-05-14T09:33:00Z",
+              "end": "2026-06-12T08:50:00Z",
+              "component": "/",
+              "mean_percent": 4.378784971995628,
+              "first_percent": 7.488315909358789,
+              "last_percent": 2.0000000000436557,
+              "hits": 30,
+              "threshold": 10.0,
+              "fraction": 0.8,
+              "min_observations": 7
+            },
+            "evidence": [
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 631,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-14T09:33:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 632,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-15T10:05:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 633,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-16T08:59:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 634,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-17T11:09:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 635,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-18T09:51:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 636,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-19T10:42:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 637,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-20T08:39:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 638,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-21T10:55:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 639,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-22T10:03:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 640,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-23T10:31:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 641,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-24T11:29:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 642,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-25T08:34:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 643,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-26T08:37:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 644,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-27T10:09:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 645,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-28T09:33:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 646,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-29T09:33:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 647,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-30T11:29:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 648,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-05-31T09:34:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 649,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-01T09:23:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 650,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-02T10:24:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 651,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-03T09:00:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 652,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-04T10:15:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 653,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-05T10:07:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 654,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-06T10:09:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 655,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-07T09:44:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 656,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-08T09:58:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 657,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-09T11:30:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 658,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-10T08:42:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 659,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-11T10:42:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              },
+              {
+                "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
+                "source_line": 660,
+                "company_id": "initech-003",
+                "device_id": "RLD7WV7J82SH",
+                "collected_at": "2026-06-12T08:50:00Z",
+                "fields": [
+                  "disk_volumes"
+                ]
+              }
+            ],
+            "method": "Last observation per UTC day; missing days count against persistence; compare explicit thresholds"
           }
         ],
         "proposals": [],
         "plan": [
-          "Analyze Initech\u2019s historical disk telemetry using the requested thresholds.",
-          "Return matching devices and the window summary."
+          "Check historical disk persistence and return matching devices with the coverage summary."
         ],
         "trace": [
           {
-            "run_id": "R-3876e1816a9e43928442277cbeff1ad9",
+            "run_id": "R-0fb5be9179c54ebab1df1aa4ccd08968",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Analyze Initech\u2019s historical disk telemetry using the requested thresholds.",
-                "Return matching devices and the window summary."
+                "Check historical disk persistence and return matching devices with the coverage summary."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-3876e1816a9e43928442277cbeff1ad9",
+            "run_id": "R-0fb5be9179c54ebab1df1aa4ccd08968",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "disk",
@@ -15988,12 +15552,12 @@
             "ok": true
           },
           {
-            "run_id": "R-3876e1816a9e43928442277cbeff1ad9",
+            "run_id": "R-0fb5be9179c54ebab1df1aa4ccd08968",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-eda270eaff355498",
-                "F-29e222bdb8545780"
+                "F-9aaa2e9b6964146f",
+                "F-649380f7814c21e0"
               ],
               "status": "answered",
               "reason": "none"
@@ -16014,14 +15578,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 38,
+            "output_tokens": 31,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1515
+            "total_tokens": 1508
           },
           {
-            "input_tokens": 1533,
+            "input_tokens": 1526,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -16034,26 +15598,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1583
+            "total_tokens": 1576
           },
           {
-            "input_tokens": 2019,
+            "input_tokens": 2015,
             "input_tokens_details": {
-              "cache_write_tokens": 1356,
+              "cache_write_tokens": 1352,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1356
+                "ttl_30m_tokens": 1352
               }
             },
-            "output_tokens": 45,
+            "output_tokens": 50,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2064
+            "total_tokens": 2065
           }
         ],
-        "elapsed_seconds": 7.009
+        "elapsed_seconds": 5.685
       }
     },
     {
@@ -16071,17 +15635,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-07ca69896b6f428f94cd4b4753cfa42a",
+        "run_id": "R-fe2d8d62bd314f078334ea0ce3199d5a",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "3 battery_eol findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-d630df40338b34a9]\n\nacme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-1f10cce6ae644fa9]\n\nacme-thinkpad-8 (8NM23J95R5I6): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (21 of 30 observed days Service Recommended); full-charge capacity 4043 to 3872 (-4.2%, units unspecified) from 2026-05-14T10:10:00Z to 2026-06-12T09:02:00Z; cycle count 1157 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-2fd97f2ea7f5e215]\n\nacme-dell-9 (M4XVHUV1MEPZ): battery end-of-life risk, 2 of 3 signals. Latest condition Service Recommended (20 of 30 observed days Service Recommended); full-charge capacity 3406 to 3262 (-4.2%, units unspecified) from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z; cycle count 948 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-5af622e0bebc96f5]",
+        "answer": "3 devices at battery end-of-life risk across 10 devices, observed 2026-05-14 to 2026-06-12. [F-ceced497d59cf7f5]\n\nacme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-e38d1a875cb27b47]\n\nacme-thinkpad-8 (8NM23J95R5I6): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (21 of 30 observed days Service Recommended); full-charge capacity 4043 to 3872 (-4.2%, units unspecified) from 2026-05-14T10:10:00Z to 2026-06-12T09:02:00Z; cycle count 1157 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-b1ee824df2323649]\n\nacme-dell-9 (M4XVHUV1MEPZ): battery end-of-life risk, 2 of 3 signals. Latest condition Service Recommended (20 of 30 observed days Service Recommended); full-charge capacity 3406 to 3262 (-4.2%, units unspecified) from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z; cycle count 948 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-dfac3f5a69ddf836]",
         "findings": [
           {
-            "id": "F-d630df40338b34a9",
+            "id": "F-ceced497d59cf7f5",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "3 battery_eol findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "3 devices at battery end-of-life risk across 10 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 3,
               "devices": 10,
@@ -19400,12 +18964,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-1f10cce6ae644fa9",
+            "id": "F-e38d1a875cb27b47",
             "company_id": "acme-001",
             "device_id": "7VP16KHV88LM",
             "kind": "battery_eol_risk",
             "text": "acme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
             "values": {
+              "hostname": "acme-macbook-1",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -19469,12 +19034,13 @@
             "method": "At least 2 of: latest condition Service Recommended; full-charge capacity decline >= 2% first-to-last; latest cycle count >= 1000"
           },
           {
-            "id": "F-2fd97f2ea7f5e215",
+            "id": "F-b1ee824df2323649",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "battery_eol_risk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (21 of 30 observed days Service Recommended); full-charge capacity 4043 to 3872 (-4.2%, units unspecified) from 2026-05-14T10:10:00Z to 2026-06-12T09:02:00Z; cycle count 1157 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -19538,12 +19104,13 @@
             "method": "At least 2 of: latest condition Service Recommended; full-charge capacity decline >= 2% first-to-last; latest cycle count >= 1000"
           },
           {
-            "id": "F-5af622e0bebc96f5",
+            "id": "F-dfac3f5a69ddf836",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "battery_eol_risk",
             "text": "acme-dell-9 (M4XVHUV1MEPZ): battery end-of-life risk, 2 of 3 signals. Latest condition Service Recommended (20 of 30 observed days Service Recommended); full-charge capacity 3406 to 3262 (-4.2%, units unspecified) from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z; cycle count 948 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
             "values": {
+              "hostname": "acme-dell-9",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -19609,23 +19176,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Check Acme battery end-of-life risk signals in the available telemetry.",
-          "Report qualifying devices with canonical findings."
+          "Check Acme\u2019s battery end-of-life risk signals in historical telemetry.",
+          "Return matching devices and the summary findings."
         ],
         "trace": [
           {
-            "run_id": "R-07ca69896b6f428f94cd4b4753cfa42a",
+            "run_id": "R-fe2d8d62bd314f078334ea0ce3199d5a",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check Acme battery end-of-life risk signals in the available telemetry.",
-                "Report qualifying devices with canonical findings."
+                "Check Acme\u2019s battery end-of-life risk signals in historical telemetry.",
+                "Return matching devices and the summary findings."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-07ca69896b6f428f94cd4b4753cfa42a",
+            "run_id": "R-fe2d8d62bd314f078334ea0ce3199d5a",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "battery_eol",
@@ -19639,14 +19206,14 @@
             "ok": true
           },
           {
-            "run_id": "R-07ca69896b6f428f94cd4b4753cfa42a",
+            "run_id": "R-fe2d8d62bd314f078334ea0ce3199d5a",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-d630df40338b34a9",
-                "F-1f10cce6ae644fa9",
-                "F-2fd97f2ea7f5e215",
-                "F-5af622e0bebc96f5"
+                "F-ceced497d59cf7f5",
+                "F-e38d1a875cb27b47",
+                "F-b1ee824df2323649",
+                "F-dfac3f5a69ddf836"
               ],
               "status": "answered",
               "reason": "none"
@@ -19667,14 +19234,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 39,
+            "output_tokens": 40,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1567
+            "total_tokens": 1568
           },
           {
-            "input_tokens": 1585,
+            "input_tokens": 1586,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -19687,26 +19254,26 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1637
+            "total_tokens": 1638
           },
           {
-            "input_tokens": 2840,
+            "input_tokens": 2852,
             "input_tokens_details": {
-              "cache_write_tokens": 2111,
+              "cache_write_tokens": 2123,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 2111
+                "ttl_30m_tokens": 2123
               }
             },
-            "output_tokens": 76,
+            "output_tokens": 70,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2916
+            "total_tokens": 2922
           }
         ],
-        "elapsed_seconds": 6.286
+        "elapsed_seconds": 6.955
       }
     },
     {
@@ -19724,17 +19291,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-37a9b1b6b7884a6b99b52acbde47286f",
+        "run_id": "R-568c09ad12484d548c4bf92b514347de",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "0 battery_eol findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z. [F-8788be5b3dd6ac9b]",
+        "answer": "0 devices at battery end-of-life risk across 8 devices, observed 2026-05-14 to 2026-06-12. [F-8e95a5474b8837be]",
         "findings": [
           {
-            "id": "F-8788be5b3dd6ac9b",
+            "id": "F-8e95a5474b8837be",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "0 battery_eol findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z.",
+            "text": "0 devices at battery end-of-life risk across 8 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 0,
               "devices": 8,
@@ -22399,7 +21966,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-37a9b1b6b7884a6b99b52acbde47286f",
+            "run_id": "R-568c09ad12484d548c4bf92b514347de",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -22409,7 +21976,7 @@
             "ok": true
           },
           {
-            "run_id": "R-37a9b1b6b7884a6b99b52acbde47286f",
+            "run_id": "R-568c09ad12484d548c4bf92b514347de",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "battery_eol",
@@ -22423,11 +21990,11 @@
             "ok": true
           },
           {
-            "run_id": "R-37a9b1b6b7884a6b99b52acbde47286f",
+            "run_id": "R-568c09ad12484d548c4bf92b514347de",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-8788be5b3dd6ac9b"
+                "F-8e95a5474b8837be"
               ],
               "status": "answered",
               "reason": "none"
@@ -22471,23 +22038,23 @@
             "total_tokens": 1591
           },
           {
-            "input_tokens": 1751,
+            "input_tokens": 1738,
             "input_tokens_details": {
-              "cache_write_tokens": 1062,
+              "cache_write_tokens": 1049,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1062
+                "ttl_30m_tokens": 1049
               }
             },
-            "output_tokens": 39,
+            "output_tokens": 38,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1790
+            "total_tokens": 1776
           }
         ],
-        "elapsed_seconds": 5.231
+        "elapsed_seconds": 5.408
       }
     },
     {
@@ -22506,18 +22073,19 @@
         "proposal_action": true
       },
       "response": {
-        "run_id": "R-7e521ea62d024ac4964b2fdbeed8af7c",
+        "run_id": "R-851a54bcd70c4238a138165a63f964c6",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-f6236801f462dd5f]\n\n1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T09:02:00Z. [F-b199636a3c7959f6]\n\nProposal P-1d1a419c6c9cd0ed7a430a61: notify_employee for 8NM23J95R5I6 \u2014 pending, simulation only; separate administrator approval required.",
+        "answer": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-08f015edceb4bf98]\n\n1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-344700fbea113cdc]\n\nProposal P-f2e812cc48c2d4f8f7ff394a: notify_employee for 8NM23J95R5I6 \u2014 pending, simulation only; separate administrator approval required.",
         "findings": [
           {
-            "id": "F-f6236801f462dd5f",
+            "id": "F-08f015edceb4bf98",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "low_disk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -22543,11 +22111,11 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-b199636a3c7959f6",
+            "id": "F-344700fbea113cdc",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T09:02:00Z.",
+            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 1,
               "scanned_devices": 1,
@@ -22587,10 +22155,10 @@
           {
             "action": "notify_employee",
             "company_id": "acme-001",
-            "created_at": "2026-11-20T15:07:45.634150+00:00",
+            "created_at": "2026-11-20T15:41:42.914004+00:00",
             "device_id": "8NM23J95R5I6",
             "employee_id": "emp-acme-1005",
-            "expires_at": "2026-11-21T15:07:45.634166+00:00",
+            "expires_at": "2026-11-21T15:41:42.914021+00:00",
             "findings": [
               {
                 "company_id": "acme-001",
@@ -22607,11 +22175,12 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-f6236801f462dd5f",
+                "id": "F-08f015edceb4bf98",
                 "kind": "low_disk",
                 "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold",
                 "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
                 "values": {
+                  "hostname": "acme-thinkpad-8",
                   "threshold_percent": 10,
                   "volumes": [
                     {
@@ -22624,35 +22193,36 @@
                 }
               }
             ],
-            "id": "P-1d1a419c6c9cd0ed7a430a61",
+            "hostname": "acme-thinkpad-8",
+            "id": "P-f2e812cc48c2d4f8f7ff394a",
             "justification": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "mode": "simulation",
-            "run_id": "R-7e521ea62d024ac4964b2fdbeed8af7c",
+            "run_id": "R-851a54bcd70c4238a138165a63f964c6",
             "scope": "Record a simulated action; no external delivery or system modification",
             "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-            "digest": "defa007e2de448fd2428d961c525f5106327a09d8efb09d6d32ec169b4d43dcb",
+            "digest": "2d732c1c8ed0a1263aec86f1c1613b747571737d768984c8daee4a276f8c16a2",
             "status": "pending",
             "decided_by": null
           }
         ],
         "plan": [
           "Check the device against the default low-disk policy.",
-          "If it qualifies, propose an employee notification and report the findings."
+          "If it qualifies, propose an employee notification and report the result."
         ],
         "trace": [
           {
-            "run_id": "R-7e521ea62d024ac4964b2fdbeed8af7c",
+            "run_id": "R-851a54bcd70c4238a138165a63f964c6",
             "tool": "make_plan",
             "arguments": {
               "steps": [
                 "Check the device against the default low-disk policy.",
-                "If it qualifies, propose an employee notification and report the findings."
+                "If it qualifies, propose an employee notification and report the result."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-7e521ea62d024ac4964b2fdbeed8af7c",
+            "run_id": "R-851a54bcd70c4238a138165a63f964c6",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -22669,24 +22239,24 @@
             "ok": true
           },
           {
-            "run_id": "R-7e521ea62d024ac4964b2fdbeed8af7c",
+            "run_id": "R-851a54bcd70c4238a138165a63f964c6",
             "tool": "propose_action",
             "arguments": {
               "action": "notify_employee",
               "device_id": "8NM23J95R5I6",
               "finding_ids": [
-                "F-f6236801f462dd5f"
+                "F-08f015edceb4bf98"
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-7e521ea62d024ac4964b2fdbeed8af7c",
+            "run_id": "R-851a54bcd70c4238a138165a63f964c6",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-f6236801f462dd5f",
-                "F-b199636a3c7959f6"
+                "F-08f015edceb4bf98",
+                "F-344700fbea113cdc"
               ],
               "status": "answered",
               "reason": "none"
@@ -22730,39 +22300,39 @@
             "total_tokens": 1836
           },
           {
-            "input_tokens": 2198,
+            "input_tokens": 2197,
             "input_tokens_details": {
-              "cache_write_tokens": 432,
+              "cache_write_tokens": 431,
               "cached_tokens": 1037,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 432
+                "ttl_30m_tokens": 431
               }
             },
             "output_tokens": 48,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2246
+            "total_tokens": 2245
           },
           {
             "input_tokens": 2347,
             "input_tokens_details": {
-              "cache_write_tokens": 149,
-              "cached_tokens": 1469,
+              "cache_write_tokens": 150,
+              "cached_tokens": 1468,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 149
+                "ttl_30m_tokens": 150
               }
             },
-            "output_tokens": 48,
+            "output_tokens": 45,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2395
+            "total_tokens": 2392
           }
         ],
-        "elapsed_seconds": 7.425
+        "elapsed_seconds": 7.478
       }
     },
     {
@@ -22781,17 +22351,17 @@
         "proposal_action": true
       },
       "response": {
-        "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+        "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 ram findings across 1 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-861d6f132c04a44b]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-74fb72226aade610]\n\n1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 0 devices have no battery reading in their latest snapshot; missing is not healthy. [F-79655e4e6f66c876]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-da76e805d39c9403]\n\nProposal P-3bae5fa29f17e3b3696990aa: flag_device_for_replacement for M4XVHUV1MEPZ \u2014 pending, simulation only; separate administrator approval required.",
+        "answer": "1 device with persistent RAM use above the threshold across 1 devices, observed 2026-05-14 to 2026-06-12. [F-a1bbae4a8d521249]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-c222174222d148d8]\n\n1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 0 devices have no battery reading in their latest snapshot; missing is not healthy. [F-17d0503795b763d3]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-d4fb49cf76d3b275]\n\nProposal P-361f71760998a22a57a3662a: flag_device_for_replacement for M4XVHUV1MEPZ \u2014 pending, simulation only; separate administrator approval required.",
         "findings": [
           {
-            "id": "F-861d6f132c04a44b",
+            "id": "F-a1bbae4a8d521249",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "1 ram findings across 1 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "1 device with persistent RAM use above the threshold across 1 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 1,
               "devices": 1,
@@ -23140,12 +22710,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-74fb72226aade610",
+            "id": "F-c222174222d148d8",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "persistent_ram",
             "text": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.",
             "values": {
+              "hostname": "acme-dell-9",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -23466,11 +23037,11 @@
             "method": "Last observation per UTC day; missing days count against persistence; compare explicit thresholds"
           },
           {
-            "id": "F-79655e4e6f66c876",
+            "id": "F-17d0503795b763d3",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 0 devices have no battery reading in their latest snapshot; missing is not healthy.",
+            "text": "1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 0 devices have no battery reading in their latest snapshot; missing is not healthy.",
             "values": {
               "count": 1,
               "scanned_devices": 1,
@@ -23506,12 +23077,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-da76e805d39c9403",
+            "id": "F-d4fb49cf76d3b275",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "battery_service",
             "text": "acme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-dell-9",
               "condition": "Service Recommended",
               "full_charge_capacity": 3262
             },
@@ -23534,10 +23106,10 @@
           {
             "action": "flag_device_for_replacement",
             "company_id": "acme-001",
-            "created_at": "2026-11-20T15:07:54.348475+00:00",
+            "created_at": "2026-11-20T15:41:52.530825+00:00",
             "device_id": "M4XVHUV1MEPZ",
             "employee_id": null,
-            "expires_at": "2026-11-21T15:07:54.348492+00:00",
+            "expires_at": "2026-11-21T15:41:52.530848+00:00",
             "findings": [
               {
                 "company_id": "acme-001",
@@ -23844,7 +23416,7 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-74fb72226aade610",
+                "id": "F-c222174222d148d8",
                 "kind": "persistent_ram",
                 "method": "Last observation per UTC day; missing days count against persistence; compare explicit thresholds",
                 "text": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.",
@@ -23854,6 +23426,7 @@
                   "first_percent": 90.938200551318,
                   "fraction": 0.8,
                   "hits": 30,
+                  "hostname": "acme-dell-9",
                   "last_percent": 98.99999999906868,
                   "mean_percent": 94.19311240684085,
                   "min_observations": 7,
@@ -23880,45 +23453,47 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-da76e805d39c9403",
+                "id": "F-d4fb49cf76d3b275",
                 "kind": "battery_service",
                 "method": "latest snapshot per device",
                 "text": "acme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
                 "values": {
                   "condition": "Service Recommended",
-                  "full_charge_capacity": 3262
+                  "full_charge_capacity": 3262,
+                  "hostname": "acme-dell-9"
                 }
               }
             ],
-            "id": "P-3bae5fa29f17e3b3696990aa",
+            "hostname": "acme-dell-9",
+            "id": "P-361f71760998a22a57a3662a",
             "justification": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "mode": "simulation",
-            "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+            "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
             "scope": "Flag for assessment only; no replacement or purchase",
             "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-            "digest": "b57004c3dbe129eac30a674ab27288dd407557ebf4318952547d86d6ccc155b8",
+            "digest": "6b88d6adb93cb6663e698cba8d460d56b2fe8864a681581b1e30e4b428756084",
             "status": "pending",
             "decided_by": null
           }
         ],
         "plan": [
-          "Check persistent RAM and latest battery service condition.",
-          "Propose replacement review only if both findings qualify, then report the evidence."
+          "Check default persistent RAM and latest battery service findings.",
+          "Propose replacement review only if both qualify, then report findings."
         ],
         "trace": [
           {
-            "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+            "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check persistent RAM and latest battery service condition.",
-                "Propose replacement review only if both findings qualify, then report the evidence."
+                "Check default persistent RAM and latest battery service findings.",
+                "Propose replacement review only if both qualify, then report findings."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+            "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -23932,7 +23507,7 @@
             "ok": true
           },
           {
-            "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+            "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
             "tool": "query_fleet",
             "arguments": {
               "kind": "battery_service",
@@ -23949,27 +23524,27 @@
             "ok": true
           },
           {
-            "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+            "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
             "tool": "propose_action",
             "arguments": {
               "action": "flag_device_for_replacement",
               "device_id": "M4XVHUV1MEPZ",
               "finding_ids": [
-                "F-74fb72226aade610",
-                "F-da76e805d39c9403"
+                "F-c222174222d148d8",
+                "F-d4fb49cf76d3b275"
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-c2ee3dc5df87479090986bdbd6523aef",
+            "run_id": "R-2c619f7d7714413ca9b8b18d3050b28d",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-861d6f132c04a44b",
-                "F-74fb72226aade610",
-                "F-79655e4e6f66c876",
-                "F-da76e805d39c9403"
+                "F-a1bbae4a8d521249",
+                "F-c222174222d148d8",
+                "F-17d0503795b763d3",
+                "F-d4fb49cf76d3b275"
               ],
               "status": "answered",
               "reason": "none"
@@ -23990,78 +23565,78 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 42,
+            "output_tokens": 41,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1753
+            "total_tokens": 1752
           },
           {
-            "input_tokens": 1771,
+            "input_tokens": 1770,
             "input_tokens_details": {
-              "cache_write_tokens": 1042,
+              "cache_write_tokens": 1041,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1042
+                "ttl_30m_tokens": 1041
               }
             },
             "output_tokens": 58,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1829
+            "total_tokens": 1828
           },
           {
-            "input_tokens": 2272,
+            "input_tokens": 2270,
             "input_tokens_details": {
-              "cache_write_tokens": 501,
-              "cached_tokens": 1042,
+              "cache_write_tokens": 500,
+              "cached_tokens": 1041,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 501
+                "ttl_30m_tokens": 500
               }
             },
             "output_tokens": 70,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2342
+            "total_tokens": 2340
           },
           {
-            "input_tokens": 2670,
+            "input_tokens": 2669,
             "input_tokens_details": {
-              "cache_write_tokens": 398,
-              "cached_tokens": 1543,
+              "cache_write_tokens": 399,
+              "cached_tokens": 1541,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 398
+                "ttl_30m_tokens": 399
               }
             },
-            "output_tokens": 61,
+            "output_tokens": 62,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
             "total_tokens": 2731
           },
           {
-            "input_tokens": 2828,
+            "input_tokens": 2831,
             "input_tokens_details": {
-              "cache_write_tokens": 158,
-              "cached_tokens": 1941,
+              "cache_write_tokens": 162,
+              "cached_tokens": 1940,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 158
+                "ttl_30m_tokens": 162
               }
             },
-            "output_tokens": 72,
+            "output_tokens": 71,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2900
+            "total_tokens": 2902
           }
         ],
-        "elapsed_seconds": 8.878
+        "elapsed_seconds": 10.47
       }
     },
     {
@@ -24077,17 +23652,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-5600320058854273a30df85d3224e74a",
+        "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
         "company_id": "globex-002",
         "status": "insufficient_data",
-        "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.\n\n0 of 1 accessible devices match failed compliance checks (severity=any, check=any), using each device's latest observation on or before 2026-06-12T08:47:00Z. [F-53325ad8d2ffb76f]\n\n0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:47:00Z. [F-337b816a5a67597f]\n\n0 of 1 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T08:47:00Z. 0 devices have no battery reading in their latest snapshot; missing is not healthy. [F-fc625ba48653853d]\n\n0 ram findings across 1 devices, observed from 2026-05-14T10:57:00Z to 2026-06-12T08:47:00Z. [F-cabd1feb813cb749]",
+        "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.\n\n0 of 1 accessible devices match failed compliance checks (severity=any, check=any), using each device's latest observation up to 2026-06-12. [F-07881acc713d1b34]\n\n0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-0c777ea0460861be]\n\n0 of 1 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 0 devices have no battery reading in their latest snapshot; missing is not healthy. [F-e76fc6f5bb2ce722]\n\n0 devices with persistent RAM use above the threshold across 1 devices, observed 2026-05-14 to 2026-06-12. [F-d8935504fe2ec191]",
         "findings": [
           {
-            "id": "F-53325ad8d2ffb76f",
+            "id": "F-07881acc713d1b34",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "0 of 1 accessible devices match failed compliance checks (severity=any, check=any), using each device's latest observation on or before 2026-06-12T08:47:00Z.",
+            "text": "0 of 1 accessible devices match failed compliance checks (severity=any, check=any), using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 0,
               "scanned_devices": 1,
@@ -24123,11 +23698,11 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-337b816a5a67597f",
+            "id": "F-0c777ea0460861be",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:47:00Z.",
+            "text": "0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 0,
               "scanned_devices": 1,
@@ -24163,11 +23738,11 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-fc625ba48653853d",
+            "id": "F-e76fc6f5bb2ce722",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "0 of 1 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T08:47:00Z. 0 devices have no battery reading in their latest snapshot; missing is not healthy.",
+            "text": "0 of 1 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 0 devices have no battery reading in their latest snapshot; missing is not healthy.",
             "values": {
               "count": 0,
               "scanned_devices": 1,
@@ -24203,11 +23778,11 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-cabd1feb813cb749",
+            "id": "F-d8935504fe2ec191",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "0 ram findings across 1 devices, observed from 2026-05-14T10:57:00Z to 2026-06-12T08:47:00Z.",
+            "text": "0 devices with persistent RAM use above the threshold across 1 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 0,
               "devices": 1,
@@ -24558,23 +24133,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Check default-policy remediation evidence for the device.",
-          "Propose a ticket if justified and report the outcome."
+          "Check default-policy findings for the device.",
+          "Propose a remediation ticket if supported and report its status."
         ],
         "trace": [
           {
-            "run_id": "R-5600320058854273a30df85d3224e74a",
+            "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check default-policy remediation evidence for the device.",
-                "Propose a ticket if justified and report the outcome."
+                "Check default-policy findings for the device.",
+                "Propose a remediation ticket if supported and report its status."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-5600320058854273a30df85d3224e74a",
+            "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
             "tool": "query_fleet",
             "arguments": {
               "kind": "compliance",
@@ -24591,7 +24166,7 @@
             "ok": true
           },
           {
-            "run_id": "R-5600320058854273a30df85d3224e74a",
+            "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -24608,7 +24183,7 @@
             "ok": true
           },
           {
-            "run_id": "R-5600320058854273a30df85d3224e74a",
+            "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
             "tool": "query_fleet",
             "arguments": {
               "kind": "battery_service",
@@ -24625,7 +24200,7 @@
             "ok": true
           },
           {
-            "run_id": "R-5600320058854273a30df85d3224e74a",
+            "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -24639,14 +24214,14 @@
             "ok": true
           },
           {
-            "run_id": "R-5600320058854273a30df85d3224e74a",
+            "run_id": "R-edf21bcde3a946fda2a60c46f277026d",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-53325ad8d2ffb76f",
-                "F-337b816a5a67597f",
-                "F-fc625ba48653853d",
-                "F-cabd1feb813cb749"
+                "F-07881acc713d1b34",
+                "F-0c777ea0460861be",
+                "F-e76fc6f5bb2ce722",
+                "F-d8935504fe2ec191"
               ],
               "status": "insufficient_data",
               "reason": "insufficient_evidence"
@@ -24690,71 +24265,71 @@
             "total_tokens": 1779
           },
           {
-            "input_tokens": 1978,
+            "input_tokens": 1968,
             "input_tokens_details": {
-              "cache_write_tokens": 1289,
+              "cache_write_tokens": 1279,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1289
+                "ttl_30m_tokens": 1279
               }
             },
             "output_tokens": 67,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2045
+            "total_tokens": 2035
           },
           {
-            "input_tokens": 2240,
+            "input_tokens": 2221,
             "input_tokens_details": {
-              "cache_write_tokens": 262,
-              "cached_tokens": 1289,
+              "cache_write_tokens": 253,
+              "cached_tokens": 1279,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 262
+                "ttl_30m_tokens": 253
               }
             },
             "output_tokens": 67,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2307
+            "total_tokens": 2288
           },
           {
-            "input_tokens": 2513,
+            "input_tokens": 2488,
             "input_tokens_details": {
-              "cache_write_tokens": 273,
-              "cached_tokens": 1551,
+              "cache_write_tokens": 267,
+              "cached_tokens": 1532,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 273
+                "ttl_30m_tokens": 267
               }
             },
             "output_tokens": 55,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2568
+            "total_tokens": 2543
           },
           {
-            "input_tokens": 2724,
+            "input_tokens": 2691,
             "input_tokens_details": {
-              "cache_write_tokens": 211,
-              "cached_tokens": 1824,
+              "cache_write_tokens": 203,
+              "cached_tokens": 1799,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 211
+                "ttl_30m_tokens": 203
               }
             },
             "output_tokens": 74,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2798
+            "total_tokens": 2765
           }
         ],
-        "elapsed_seconds": 11.438
+        "elapsed_seconds": 12.645
       }
     },
     {
@@ -24772,17 +24347,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-f819a16108c74cd69445cef5de4544d6",
+        "run_id": "R-73ac4c74d5a8430c8d03c4b06e64196c",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z. [F-76cf15d7c033f721]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-abaf10258a0d58b9]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-c5d8e6d1db889ec6]",
+        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-3cc5e8e63d87ef8d]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-56d4f1de51167fd9]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-9ef2c3a9dda457e9]",
         "findings": [
           {
-            "id": "F-76cf15d7c033f721",
+            "id": "F-3cc5e8e63d87ef8d",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z.",
+            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 10,
@@ -24926,12 +24501,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-abaf10258a0d58b9",
+            "id": "F-56d4f1de51167fd9",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "low_disk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -24957,12 +24533,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-c5d8e6d1db889ec6",
+            "id": "F-9ef2c3a9dda457e9",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "low_disk",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-macbook-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -24990,21 +24567,23 @@
         ],
         "proposals": [],
         "plan": [
-          "Check Acme\u2019s latest disk telemetry and report matches; decline approval and execution."
+          "Query Acme\u2019s latest recorded disk telemetry for devices below 10% free.",
+          "Report canonical findings and note that approvals and execution are unavailable."
         ],
         "trace": [
           {
-            "run_id": "R-f819a16108c74cd69445cef5de4544d6",
+            "run_id": "R-73ac4c74d5a8430c8d03c4b06e64196c",
             "tool": "make_plan",
             "arguments": {
               "steps": [
-                "Check Acme\u2019s latest disk telemetry and report matches; decline approval and execution."
+                "Query Acme\u2019s latest recorded disk telemetry for devices below 10% free.",
+                "Report canonical findings and note that approvals and execution are unavailable."
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-f819a16108c74cd69445cef5de4544d6",
+            "run_id": "R-73ac4c74d5a8430c8d03c4b06e64196c",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -25021,19 +24600,19 @@
             "ok": true
           },
           {
-            "run_id": "R-f819a16108c74cd69445cef5de4544d6",
+            "run_id": "R-73ac4c74d5a8430c8d03c4b06e64196c",
             "tool": "finish",
             "ok": false,
             "error": "unsupported_answer"
           },
           {
-            "run_id": "R-f819a16108c74cd69445cef5de4544d6",
+            "run_id": "R-73ac4c74d5a8430c8d03c4b06e64196c",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-76cf15d7c033f721",
-                "F-abaf10258a0d58b9",
-                "F-c5d8e6d1db889ec6"
+                "F-3cc5e8e63d87ef8d",
+                "F-56d4f1de51167fd9",
+                "F-9ef2c3a9dda457e9"
               ],
               "status": "answered",
               "reason": "none"
@@ -25054,14 +24633,14 @@
                 "ttl_30m_tokens": 0
               }
             },
-            "output_tokens": 34,
+            "output_tokens": 46,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1587
+            "total_tokens": 1599
           },
           {
-            "input_tokens": 1605,
+            "input_tokens": 1617,
             "input_tokens_details": {
               "cache_write_tokens": 0,
               "cached_tokens": 0,
@@ -25074,42 +24653,42 @@
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 1667
+            "total_tokens": 1679
           },
           {
-            "input_tokens": 2191,
+            "input_tokens": 2219,
             "input_tokens_details": {
-              "cache_write_tokens": 1462,
+              "cache_write_tokens": 1490,
               "cached_tokens": 0,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 1462
+                "ttl_30m_tokens": 1490
               }
             },
-            "output_tokens": 64,
+            "output_tokens": 68,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2255
+            "total_tokens": 2287
           },
           {
-            "input_tokens": 2282,
+            "input_tokens": 2314,
             "input_tokens_details": {
-              "cache_write_tokens": 91,
-              "cached_tokens": 1462,
+              "cache_write_tokens": 95,
+              "cached_tokens": 1490,
               "cache_write_tokens_details": {
                 "ttl_12h_tokens": 0,
-                "ttl_30m_tokens": 91
+                "ttl_30m_tokens": 95
               }
             },
-            "output_tokens": 63,
+            "output_tokens": 67,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 2345
+            "total_tokens": 2381
           }
         ],
-        "elapsed_seconds": 7.923
+        "elapsed_seconds": 7.896
       }
     }
   ]

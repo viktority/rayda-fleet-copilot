@@ -130,7 +130,7 @@ async function reviewDecision(id, kind) {
     $("decision-title").textContent =
       kind === "approve" ? "Approve this simulation?" : "Reject this proposal?";
     $("decision-summary").textContent =
-      `${actionLabels[proposal.action]} for ${proposal.device_id}. ${kind === "approve" ? "This records a simulated action only." : "This proposal will not be executed."}`;
+      `${actionLabels[proposal.action]} for ${proposal.hostname || proposal.device_id}. ${kind === "approve" ? "This records a simulated action only." : "This proposal will not be executed."}`;
     $("decision-details").replaceChildren();
     for (const finding of proposal.findings)
       $("decision-details").append(findingRow(finding));

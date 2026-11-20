@@ -79,6 +79,9 @@ def reference(row: dict, fields: list[str]) -> Evidence:
 
 
 def finding(principal, kind, text, values, rows, fields, method, device_id=None):
+    if device_id is not None:
+        # Display label for clients; the device ID remains the identifier used everywhere else.
+        values = {"hostname": rows[-1]["os"]["hostname"], **values}
     body = dict(
         company_id=principal.company_id,
         device_id=device_id,
@@ -218,7 +221,7 @@ class Analytics:
         coverage = scoped or list(latest.values())
         as_of = max(r["collected_at"] for r in coverage)
         missing = sum("battery" not in r for r in scoped) if q.kind == "battery_service" else 0
-        summary = f"{len(results)} of {len(scoped)} accessible devices match {label}, using each device's latest observation on or before {as_of}."
+        summary = f"{len(results)} of {len(scoped)} accessible devices match {label}, using each device's latest observation up to {as_of[:10]}."
         if q.kind == "battery_service":
             summary += f" {missing} devices have no battery reading in their latest snapshot; missing is not healthy."
         parameters = q.model_dump(mode="json")
@@ -458,7 +461,18 @@ class Analytics:
                                     device,
                                 )
                             )
-        summary = f"{len(results)} {q.kind} findings across {len(groups)} devices, observed from {min(r['collected_at'] for r in rows)} to {max(r['collected_at'] for r in rows)}."
+        n = len(results)
+        label = {
+            "ram": f"device{'s' if n != 1 else ''} with persistent RAM use above the threshold",
+            "disk": f"volume{'s' if n != 1 else ''} persistently low on storage",
+            "battery": f"battery trend{'s' if n != 1 else ''}",
+            "battery_eol": f"device{'s' if n != 1 else ''} at battery end-of-life risk",
+            "compliance": f"compliance status change{'s' if n != 1 else ''}",
+            "software": f"software inventory change{'s' if n != 1 else ''}",
+        }[q.kind]
+        first_day = min(r["collected_at"] for r in rows)[:10]
+        last_day = max(r["collected_at"] for r in rows)[:10]
+        summary = f"{n} {label} across {len(groups)} devices, observed {first_day} to {last_day}."
         return [
             finding(
                 principal,

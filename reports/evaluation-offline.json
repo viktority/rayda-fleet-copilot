@@ -1,6 +1,6 @@
 {
   "mode": "offline-routing-oracle",
-  "evaluated_at": "2026-11-20T15:05:37.441696+00:00",
+  "evaluated_at": "2026-11-20T15:39:53.120928+00:00",
   "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
   "passed": true,
   "passed_cases": 21,
@@ -23,17 +23,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-bff138e47ab9442291b6bc21f6605c91",
+        "run_id": "R-f37c899592044837ba46a77498ffd111",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z. [F-6ae68797434e3e27]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-f6236801f462dd5f]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-660bd043ee99474d]",
+        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-a425018065877fae]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-08f015edceb4bf98]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-191f574a4c8d063b]",
         "findings": [
           {
-            "id": "F-6ae68797434e3e27",
+            "id": "F-a425018065877fae",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z.",
+            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 10,
@@ -177,12 +177,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-f6236801f462dd5f",
+            "id": "F-08f015edceb4bf98",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "low_disk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -208,12 +209,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-660bd043ee99474d",
+            "id": "F-191f574a4c8d063b",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "low_disk",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-macbook-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -246,7 +248,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-bff138e47ab9442291b6bc21f6605c91",
+            "run_id": "R-f37c899592044837ba46a77498ffd111",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -257,7 +259,7 @@
             "ok": true
           },
           {
-            "run_id": "R-bff138e47ab9442291b6bc21f6605c91",
+            "run_id": "R-f37c899592044837ba46a77498ffd111",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -274,13 +276,13 @@
             "ok": true
           },
           {
-            "run_id": "R-bff138e47ab9442291b6bc21f6605c91",
+            "run_id": "R-f37c899592044837ba46a77498ffd111",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-6ae68797434e3e27",
-                "F-f6236801f462dd5f",
-                "F-660bd043ee99474d"
+                "F-a425018065877fae",
+                "F-08f015edceb4bf98",
+                "F-191f574a4c8d063b"
               ],
               "status": "answered",
               "reason": "none"
@@ -295,7 +297,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.05
+        "elapsed_seconds": 0.101
       }
     },
     {
@@ -313,17 +315,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-b1c0c08390e443a7937d833a5b764c1e",
+        "run_id": "R-feaec86cd5724f1695829f63ed355a86",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:47:00Z. [F-93865f9b0657d912]\n\nglobex-dell-7 (E4V0SB5I0MYU) has low disk space (C:\\: 2.39% free) as of 2026-06-12T08:54:00Z; threshold is <10% free. [F-2b9ad233a46896b4]\n\nglobex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free. [F-21fe6b4542500c44]",
+        "answer": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-729b22564662c00d]\n\nglobex-dell-7 (E4V0SB5I0MYU) has low disk space (C:\\: 2.39% free) as of 2026-06-12T08:54:00Z; threshold is <10% free. [F-50ee4a2830dfdde1]\n\nglobex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free. [F-10cc083ad30405db]",
         "findings": [
           {
-            "id": "F-93865f9b0657d912",
+            "id": "F-729b22564662c00d",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:47:00Z.",
+            "text": "2 of 8 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 8,
@@ -443,12 +445,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-2b9ad233a46896b4",
+            "id": "F-50ee4a2830dfdde1",
             "company_id": "globex-002",
             "device_id": "E4V0SB5I0MYU",
             "kind": "low_disk",
             "text": "globex-dell-7 (E4V0SB5I0MYU) has low disk space (C:\\: 2.39% free) as of 2026-06-12T08:54:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "globex-dell-7",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -474,12 +477,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-21fe6b4542500c44",
+            "id": "F-10cc083ad30405db",
             "company_id": "globex-002",
             "device_id": "JRZSGXVMKE6M",
             "kind": "low_disk",
             "text": "globex-thinkpad-8 (JRZSGXVMKE6M) has low disk space (C:\\: 2.00% free) as of 2026-06-12T10:46:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "globex-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -512,7 +516,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-b1c0c08390e443a7937d833a5b764c1e",
+            "run_id": "R-feaec86cd5724f1695829f63ed355a86",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -523,7 +527,7 @@
             "ok": true
           },
           {
-            "run_id": "R-b1c0c08390e443a7937d833a5b764c1e",
+            "run_id": "R-feaec86cd5724f1695829f63ed355a86",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -540,13 +544,13 @@
             "ok": true
           },
           {
-            "run_id": "R-b1c0c08390e443a7937d833a5b764c1e",
+            "run_id": "R-feaec86cd5724f1695829f63ed355a86",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-93865f9b0657d912",
-                "F-2b9ad233a46896b4",
-                "F-21fe6b4542500c44"
+                "F-729b22564662c00d",
+                "F-50ee4a2830dfdde1",
+                "F-10cc083ad30405db"
               ],
               "status": "answered",
               "reason": "none"
@@ -561,7 +565,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.015
+        "elapsed_seconds": 0.022
       }
     },
     {
@@ -579,17 +583,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-e659b913c62d47d8abee95c169d0409c",
+        "run_id": "R-c4542f7174e349f7a514908d0c2162f7",
         "company_id": "initech-003",
         "status": "answered",
-        "answer": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:57:00Z. [F-c2ca4bfd361899a2]\n\ninitech-macbook-6 (DARFCP0BQM2G) has low disk space (/: 2.00% free) as of 2026-06-12T10:31:00Z; threshold is <10% free. [F-62891f80b4aa8e61]\n\ninitech-mac-4 (RLD7WV7J82SH) has low disk space (/: 2.00% free) as of 2026-06-12T08:50:00Z; threshold is <10% free. [F-11550042184811a9]",
+        "answer": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-f580d51316e6ed67]\n\ninitech-macbook-6 (DARFCP0BQM2G) has low disk space (/: 2.00% free) as of 2026-06-12T10:31:00Z; threshold is <10% free. [F-14d83d851d18c98b]\n\ninitech-mac-4 (RLD7WV7J82SH) has low disk space (/: 2.00% free) as of 2026-06-12T08:50:00Z; threshold is <10% free. [F-457c32dd2bc96b77]",
         "findings": [
           {
-            "id": "F-c2ca4bfd361899a2",
+            "id": "F-f580d51316e6ed67",
             "company_id": "initech-003",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T10:57:00Z.",
+            "text": "2 of 7 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 7,
@@ -697,12 +701,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-62891f80b4aa8e61",
+            "id": "F-14d83d851d18c98b",
             "company_id": "initech-003",
             "device_id": "DARFCP0BQM2G",
             "kind": "low_disk",
             "text": "initech-macbook-6 (DARFCP0BQM2G) has low disk space (/: 2.00% free) as of 2026-06-12T10:31:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "initech-macbook-6",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -728,12 +733,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-11550042184811a9",
+            "id": "F-457c32dd2bc96b77",
             "company_id": "initech-003",
             "device_id": "RLD7WV7J82SH",
             "kind": "low_disk",
             "text": "initech-mac-4 (RLD7WV7J82SH) has low disk space (/: 2.00% free) as of 2026-06-12T08:50:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "initech-mac-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -766,7 +772,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-e659b913c62d47d8abee95c169d0409c",
+            "run_id": "R-c4542f7174e349f7a514908d0c2162f7",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -777,7 +783,7 @@
             "ok": true
           },
           {
-            "run_id": "R-e659b913c62d47d8abee95c169d0409c",
+            "run_id": "R-c4542f7174e349f7a514908d0c2162f7",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -794,13 +800,13 @@
             "ok": true
           },
           {
-            "run_id": "R-e659b913c62d47d8abee95c169d0409c",
+            "run_id": "R-c4542f7174e349f7a514908d0c2162f7",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-c2ca4bfd361899a2",
-                "F-62891f80b4aa8e61",
-                "F-11550042184811a9"
+                "F-f580d51316e6ed67",
+                "F-14d83d851d18c98b",
+                "F-457c32dd2bc96b77"
               ],
               "status": "answered",
               "reason": "none"
@@ -815,7 +821,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.014
+        "elapsed_seconds": 0.018
       }
     },
     {
@@ -834,17 +840,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-0729d88c676348b382bc470ebde3fb9e",
+        "run_id": "R-a86799414fd447dbac735ce2b918da24",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation on or before 2026-06-12T11:00:00Z. [F-4b704c7db647c39e]",
+        "answer": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation up to 2026-06-12. [F-a048b4e13f894f6e]",
         "findings": [
           {
-            "id": "F-4b704c7db647c39e",
+            "id": "F-a048b4e13f894f6e",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation on or before 2026-06-12T11:00:00Z.",
+            "text": "0 of 9 accessible devices match failed compliance checks (severity=high, check=any), using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 0,
               "scanned_devices": 9,
@@ -983,7 +989,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-0729d88c676348b382bc470ebde3fb9e",
+            "run_id": "R-a86799414fd447dbac735ce2b918da24",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -994,7 +1000,7 @@
             "ok": true
           },
           {
-            "run_id": "R-0729d88c676348b382bc470ebde3fb9e",
+            "run_id": "R-a86799414fd447dbac735ce2b918da24",
             "tool": "query_fleet",
             "arguments": {
               "kind": "compliance",
@@ -1011,11 +1017,11 @@
             "ok": true
           },
           {
-            "run_id": "R-0729d88c676348b382bc470ebde3fb9e",
+            "run_id": "R-a86799414fd447dbac735ce2b918da24",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-4b704c7db647c39e"
+                "F-a048b4e13f894f6e"
               ],
               "status": "answered",
               "reason": "none"
@@ -1030,7 +1036,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.016
+        "elapsed_seconds": 0.031
       }
     },
     {
@@ -1048,17 +1054,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-a35b66e82d744158a2cdfe43e23b2dc5",
+        "run_id": "R-fc68082f6c7247c99263f4184518cacd",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation on or before 2026-06-12T10:57:00Z. [F-67a7f41556ad1b51]\n\nacme-macbook-2 (1LYSSFD074BB) runs macOS 14.5, below major version 15, as of 2026-06-12T09:47:00Z. [F-c5732b0f71f2c48a]\n\nacme-macbook-1 (7VP16KHV88LM) runs macOS 13.6, below major version 15, as of 2026-06-12T10:41:00Z. [F-4874583d17600415]\n\nacme-macbook-4 (MT7PJB7N5LRE) runs macOS 14.5, below major version 15, as of 2026-06-12T08:39:00Z. [F-92dcad73068ce553]\n\nacme-macbook-6 (XSU9UUDGU6AC) runs macOS 14.5, below major version 15, as of 2026-06-12T09:52:00Z. [F-8de6665bf2dc04d9]",
+        "answer": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation up to 2026-06-12. [F-997f292f34a7ea1a]\n\nacme-macbook-2 (1LYSSFD074BB) runs macOS 14.5, below major version 15, as of 2026-06-12T09:47:00Z. [F-477cb0678dda20d2]\n\nacme-macbook-1 (7VP16KHV88LM) runs macOS 13.6, below major version 15, as of 2026-06-12T10:41:00Z. [F-61a52060d29aada3]\n\nacme-macbook-4 (MT7PJB7N5LRE) runs macOS 14.5, below major version 15, as of 2026-06-12T08:39:00Z. [F-629a9f213035902b]\n\nacme-macbook-6 (XSU9UUDGU6AC) runs macOS 14.5, below major version 15, as of 2026-06-12T09:52:00Z. [F-17e79c317570a756]",
         "findings": [
           {
-            "id": "F-67a7f41556ad1b51",
+            "id": "F-997f292f34a7ea1a",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation on or before 2026-06-12T10:57:00Z.",
+            "text": "4 of 7 accessible devices match macOS major version below 15, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 4,
               "scanned_devices": 7,
@@ -1173,12 +1179,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-c5732b0f71f2c48a",
+            "id": "F-477cb0678dda20d2",
             "company_id": "acme-001",
             "device_id": "1LYSSFD074BB",
             "kind": "os_older",
             "text": "acme-macbook-2 (1LYSSFD074BB) runs macOS 14.5, below major version 15, as of 2026-06-12T09:47:00Z.",
             "values": {
+              "hostname": "acme-macbook-2",
               "version": "14.5",
               "major_limit": 15
             },
@@ -1198,12 +1205,13 @@
             "method": "macOS-only integer major-version comparison"
           },
           {
-            "id": "F-4874583d17600415",
+            "id": "F-61a52060d29aada3",
             "company_id": "acme-001",
             "device_id": "7VP16KHV88LM",
             "kind": "os_older",
             "text": "acme-macbook-1 (7VP16KHV88LM) runs macOS 13.6, below major version 15, as of 2026-06-12T10:41:00Z.",
             "values": {
+              "hostname": "acme-macbook-1",
               "version": "13.6",
               "major_limit": 15
             },
@@ -1223,12 +1231,13 @@
             "method": "macOS-only integer major-version comparison"
           },
           {
-            "id": "F-92dcad73068ce553",
+            "id": "F-629a9f213035902b",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "os_older",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) runs macOS 14.5, below major version 15, as of 2026-06-12T08:39:00Z.",
             "values": {
+              "hostname": "acme-macbook-4",
               "version": "14.5",
               "major_limit": 15
             },
@@ -1248,12 +1257,13 @@
             "method": "macOS-only integer major-version comparison"
           },
           {
-            "id": "F-8de6665bf2dc04d9",
+            "id": "F-17e79c317570a756",
             "company_id": "acme-001",
             "device_id": "XSU9UUDGU6AC",
             "kind": "os_older",
             "text": "acme-macbook-6 (XSU9UUDGU6AC) runs macOS 14.5, below major version 15, as of 2026-06-12T09:52:00Z.",
             "values": {
+              "hostname": "acme-macbook-6",
               "version": "14.5",
               "major_limit": 15
             },
@@ -1280,7 +1290,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-a35b66e82d744158a2cdfe43e23b2dc5",
+            "run_id": "R-fc68082f6c7247c99263f4184518cacd",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -1291,7 +1301,7 @@
             "ok": true
           },
           {
-            "run_id": "R-a35b66e82d744158a2cdfe43e23b2dc5",
+            "run_id": "R-fc68082f6c7247c99263f4184518cacd",
             "tool": "query_fleet",
             "arguments": {
               "kind": "os_older",
@@ -1308,15 +1318,15 @@
             "ok": true
           },
           {
-            "run_id": "R-a35b66e82d744158a2cdfe43e23b2dc5",
+            "run_id": "R-fc68082f6c7247c99263f4184518cacd",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-67a7f41556ad1b51",
-                "F-c5732b0f71f2c48a",
-                "F-4874583d17600415",
-                "F-92dcad73068ce553",
-                "F-8de6665bf2dc04d9"
+                "F-997f292f34a7ea1a",
+                "F-477cb0678dda20d2",
+                "F-61a52060d29aada3",
+                "F-629a9f213035902b",
+                "F-17e79c317570a756"
               ],
               "status": "answered",
               "reason": "none"
@@ -1331,7 +1341,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.017
+        "elapsed_seconds": 0.022
       }
     },
     {
@@ -1349,17 +1359,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-eb314871ee274a46aa4a2ab1819a0a47",
+        "run_id": "R-89ee139fa6a9423f94ec067831d4192c",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 ram findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-1fb1673fca0e5b63]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-74fb72226aade610]",
+        "answer": "1 device with persistent RAM use above the threshold across 10 devices, observed 2026-05-14 to 2026-06-12. [F-8e6545c4cc9537c0]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-c222174222d148d8]",
         "findings": [
           {
-            "id": "F-1fb1673fca0e5b63",
+            "id": "F-8e6545c4cc9537c0",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "1 ram findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "1 device with persistent RAM use above the threshold across 10 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 1,
               "devices": 10,
@@ -4678,12 +4688,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-74fb72226aade610",
+            "id": "F-c222174222d148d8",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "persistent_ram",
             "text": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.",
             "values": {
+              "hostname": "acme-dell-9",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -5011,7 +5022,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-eb314871ee274a46aa4a2ab1819a0a47",
+            "run_id": "R-89ee139fa6a9423f94ec067831d4192c",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -5022,7 +5033,7 @@
             "ok": true
           },
           {
-            "run_id": "R-eb314871ee274a46aa4a2ab1819a0a47",
+            "run_id": "R-89ee139fa6a9423f94ec067831d4192c",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -5036,12 +5047,12 @@
             "ok": true
           },
           {
-            "run_id": "R-eb314871ee274a46aa4a2ab1819a0a47",
+            "run_id": "R-89ee139fa6a9423f94ec067831d4192c",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-1fb1673fca0e5b63",
-                "F-74fb72226aade610"
+                "F-8e6545c4cc9537c0",
+                "F-c222174222d148d8"
               ],
               "status": "answered",
               "reason": "none"
@@ -5056,7 +5067,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.019
+        "elapsed_seconds": 0.029
       }
     },
     {
@@ -5074,17 +5085,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-7600f93d3dd244dba42e7501acf4ba1a",
+        "run_id": "R-27a9d1ce978b42cb95544cc9ffeefdda",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "0 ram findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z. [F-7fdaa3177674deb1]",
+        "answer": "0 devices with persistent RAM use above the threshold across 8 devices, observed 2026-05-14 to 2026-06-12. [F-320be92be8aa7c5b]",
         "findings": [
           {
-            "id": "F-7fdaa3177674deb1",
+            "id": "F-320be92be8aa7c5b",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "0 ram findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z.",
+            "text": "0 devices with persistent RAM use above the threshold across 8 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 0,
               "devices": 8,
@@ -7750,7 +7761,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-7600f93d3dd244dba42e7501acf4ba1a",
+            "run_id": "R-27a9d1ce978b42cb95544cc9ffeefdda",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -7761,7 +7772,7 @@
             "ok": true
           },
           {
-            "run_id": "R-7600f93d3dd244dba42e7501acf4ba1a",
+            "run_id": "R-27a9d1ce978b42cb95544cc9ffeefdda",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -7775,11 +7786,11 @@
             "ok": true
           },
           {
-            "run_id": "R-7600f93d3dd244dba42e7501acf4ba1a",
+            "run_id": "R-27a9d1ce978b42cb95544cc9ffeefdda",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-7fdaa3177674deb1"
+                "F-320be92be8aa7c5b"
               ],
               "status": "answered",
               "reason": "none"
@@ -7794,7 +7805,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.016
+        "elapsed_seconds": 0.026
       }
     },
     {
@@ -7812,17 +7823,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-20bdd52eeafe430f85ff49e454c2eb99",
+        "run_id": "R-117fe5367db8433d9788961a67760b36",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 2 devices have no battery reading in their latest snapshot; missing is not healthy. [F-b7aa48fbe32ffb98]\n\nacme-macbook-1 (7VP16KHV88LM) reports battery condition Service Recommended as of 2026-06-12T10:41:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-c9ab89227afc8e36]\n\nacme-thinkpad-8 (8NM23J95R5I6) reports battery condition Service Recommended as of 2026-06-12T09:02:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-f58d9a3e22f3c834]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-da76e805d39c9403]",
+        "answer": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 2 devices have no battery reading in their latest snapshot; missing is not healthy. [F-78dac64d22fe064a]\n\nacme-macbook-1 (7VP16KHV88LM) reports battery condition Service Recommended as of 2026-06-12T10:41:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-031c3d1f012d0595]\n\nacme-thinkpad-8 (8NM23J95R5I6) reports battery condition Service Recommended as of 2026-06-12T09:02:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-2bc9ab68c1168e87]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-d4fb49cf76d3b275]",
         "findings": [
           {
-            "id": "F-b7aa48fbe32ffb98",
+            "id": "F-78dac64d22fe064a",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 2 devices have no battery reading in their latest snapshot; missing is not healthy.",
+            "text": "3 of 10 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 2 devices have no battery reading in their latest snapshot; missing is not healthy.",
             "values": {
               "count": 3,
               "scanned_devices": 10,
@@ -7966,12 +7977,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-c9ab89227afc8e36",
+            "id": "F-031c3d1f012d0595",
             "company_id": "acme-001",
             "device_id": "7VP16KHV88LM",
             "kind": "battery_service",
             "text": "acme-macbook-1 (7VP16KHV88LM) reports battery condition Service Recommended as of 2026-06-12T10:41:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-macbook-1",
               "condition": "Service Recommended",
               "full_charge_capacity": 4166
             },
@@ -7990,12 +8002,13 @@
             "method": "latest snapshot per device"
           },
           {
-            "id": "F-f58d9a3e22f3c834",
+            "id": "F-2bc9ab68c1168e87",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "battery_service",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) reports battery condition Service Recommended as of 2026-06-12T09:02:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "condition": "Service Recommended",
               "full_charge_capacity": 3872
             },
@@ -8014,12 +8027,13 @@
             "method": "latest snapshot per device"
           },
           {
-            "id": "F-da76e805d39c9403",
+            "id": "F-d4fb49cf76d3b275",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "battery_service",
             "text": "acme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-dell-9",
               "condition": "Service Recommended",
               "full_charge_capacity": 3262
             },
@@ -8045,7 +8059,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-20bdd52eeafe430f85ff49e454c2eb99",
+            "run_id": "R-117fe5367db8433d9788961a67760b36",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -8056,7 +8070,7 @@
             "ok": true
           },
           {
-            "run_id": "R-20bdd52eeafe430f85ff49e454c2eb99",
+            "run_id": "R-117fe5367db8433d9788961a67760b36",
             "tool": "query_fleet",
             "arguments": {
               "kind": "battery_service",
@@ -8073,14 +8087,14 @@
             "ok": true
           },
           {
-            "run_id": "R-20bdd52eeafe430f85ff49e454c2eb99",
+            "run_id": "R-117fe5367db8433d9788961a67760b36",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-b7aa48fbe32ffb98",
-                "F-c9ab89227afc8e36",
-                "F-f58d9a3e22f3c834",
-                "F-da76e805d39c9403"
+                "F-78dac64d22fe064a",
+                "F-031c3d1f012d0595",
+                "F-2bc9ab68c1168e87",
+                "F-d4fb49cf76d3b275"
               ],
               "status": "answered",
               "reason": "none"
@@ -8095,7 +8109,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.016
+        "elapsed_seconds": 0.035
       }
     },
     {
@@ -8113,17 +8127,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-29343a5064364b0b82c7645fdc5cf364",
+        "run_id": "R-c12de8742e49454ca5a8618903a9f1ce",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "5 compliance findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-aea3395bc7412861]\n\nacme-macbook-2 (1LYSSFD074BB): screen_lock changed from pass at 2026-05-21T09:45:00Z to fail at 2026-05-22T09:41:00Z. [F-71a6ce9597c1f997]\n\nacme-thinkpad-8 (8NM23J95R5I6): screen_lock changed from pass at 2026-05-29T11:16:00Z to fail at 2026-05-30T08:38:00Z. [F-55b02d76e17d4c63]\n\nacme-mac-5 (DLT35MHGTH2D): screen_lock changed from pass at 2026-05-31T09:37:00Z to fail at 2026-06-01T10:14:00Z. [F-aedfb5ca39240476]\n\nacme-macbook-3 (DSYPSES7SKBB): screen_lock changed from pass at 2026-05-31T10:31:00Z to fail at 2026-06-01T10:20:00Z. [F-62abc24b26c7d8e3]\n\nacme-macbook-4 (MT7PJB7N5LRE): screen_lock changed from pass at 2026-05-27T10:03:00Z to fail at 2026-05-28T09:32:00Z. [F-67903aa62d03850a]",
+        "answer": "5 compliance status changes across 10 devices, observed 2026-05-14 to 2026-06-12. [F-175ed7297c946656]\n\nacme-macbook-2 (1LYSSFD074BB): screen_lock changed from pass at 2026-05-21T09:45:00Z to fail at 2026-05-22T09:41:00Z. [F-d49e1bf549460984]\n\nacme-thinkpad-8 (8NM23J95R5I6): screen_lock changed from pass at 2026-05-29T11:16:00Z to fail at 2026-05-30T08:38:00Z. [F-d1fe864cc105ad83]\n\nacme-mac-5 (DLT35MHGTH2D): screen_lock changed from pass at 2026-05-31T09:37:00Z to fail at 2026-06-01T10:14:00Z. [F-11dfcbc35f08b36c]\n\nacme-macbook-3 (DSYPSES7SKBB): screen_lock changed from pass at 2026-05-31T10:31:00Z to fail at 2026-06-01T10:20:00Z. [F-90c07cf468e85391]\n\nacme-macbook-4 (MT7PJB7N5LRE): screen_lock changed from pass at 2026-05-27T10:03:00Z to fail at 2026-05-28T09:32:00Z. [F-49a973ac6eb593e4]",
         "findings": [
           {
-            "id": "F-aea3395bc7412861",
+            "id": "F-175ed7297c946656",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "5 compliance findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "5 compliance status changes across 10 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 5,
               "devices": 10,
@@ -11442,12 +11456,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-71a6ce9597c1f997",
+            "id": "F-d49e1bf549460984",
             "company_id": "acme-001",
             "device_id": "1LYSSFD074BB",
             "kind": "compliance_drift",
             "text": "acme-macbook-2 (1LYSSFD074BB): screen_lock changed from pass at 2026-05-21T09:45:00Z to fail at 2026-05-22T09:41:00Z.",
             "values": {
+              "hostname": "acme-macbook-2",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11477,12 +11492,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-55b02d76e17d4c63",
+            "id": "F-d1fe864cc105ad83",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "compliance_drift",
             "text": "acme-thinkpad-8 (8NM23J95R5I6): screen_lock changed from pass at 2026-05-29T11:16:00Z to fail at 2026-05-30T08:38:00Z.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11512,12 +11528,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-aedfb5ca39240476",
+            "id": "F-11dfcbc35f08b36c",
             "company_id": "acme-001",
             "device_id": "DLT35MHGTH2D",
             "kind": "compliance_drift",
             "text": "acme-mac-5 (DLT35MHGTH2D): screen_lock changed from pass at 2026-05-31T09:37:00Z to fail at 2026-06-01T10:14:00Z.",
             "values": {
+              "hostname": "acme-mac-5",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11547,12 +11564,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-62abc24b26c7d8e3",
+            "id": "F-90c07cf468e85391",
             "company_id": "acme-001",
             "device_id": "DSYPSES7SKBB",
             "kind": "compliance_drift",
             "text": "acme-macbook-3 (DSYPSES7SKBB): screen_lock changed from pass at 2026-05-31T10:31:00Z to fail at 2026-06-01T10:20:00Z.",
             "values": {
+              "hostname": "acme-macbook-3",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11582,12 +11600,13 @@
             "method": "Compare adjacent observations for the same check"
           },
           {
-            "id": "F-67903aa62d03850a",
+            "id": "F-49a973ac6eb593e4",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "compliance_drift",
             "text": "acme-macbook-4 (MT7PJB7N5LRE): screen_lock changed from pass at 2026-05-27T10:03:00Z to fail at 2026-05-28T09:32:00Z.",
             "values": {
+              "hostname": "acme-macbook-4",
               "check_id": "screen_lock",
               "before": "pass",
               "after": "fail"
@@ -11624,7 +11643,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-29343a5064364b0b82c7645fdc5cf364",
+            "run_id": "R-c12de8742e49454ca5a8618903a9f1ce",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -11635,7 +11654,7 @@
             "ok": true
           },
           {
-            "run_id": "R-29343a5064364b0b82c7645fdc5cf364",
+            "run_id": "R-c12de8742e49454ca5a8618903a9f1ce",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "compliance",
@@ -11649,16 +11668,16 @@
             "ok": true
           },
           {
-            "run_id": "R-29343a5064364b0b82c7645fdc5cf364",
+            "run_id": "R-c12de8742e49454ca5a8618903a9f1ce",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-aea3395bc7412861",
-                "F-71a6ce9597c1f997",
-                "F-55b02d76e17d4c63",
-                "F-aedfb5ca39240476",
-                "F-62abc24b26c7d8e3",
-                "F-67903aa62d03850a"
+                "F-175ed7297c946656",
+                "F-d49e1bf549460984",
+                "F-d1fe864cc105ad83",
+                "F-11dfcbc35f08b36c",
+                "F-90c07cf468e85391",
+                "F-49a973ac6eb593e4"
               ],
               "status": "answered",
               "reason": "none"
@@ -11673,7 +11692,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.017
+        "elapsed_seconds": 0.024
       }
     },
     {
@@ -11691,17 +11710,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-1ef045cb80c249ffaa2f7ae4c3b660b0",
+        "run_id": "R-93802fd5239d4d6d914ddfd7033e4348",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation on or before 2026-06-12T10:47:00Z. [F-3fa9bf7bef88d249]\n\nglobex-macbook-4 (Q1AFVLH3YV33) has uTorrent 3.6 as of 2026-06-12T08:34:00Z. Presence alone does not establish a policy violation. [F-ddf66340a68c136b]",
+        "answer": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation up to 2026-06-12. [F-981a2bfd747d790e]\n\nglobex-macbook-4 (Q1AFVLH3YV33) has uTorrent 3.6 as of 2026-06-12T08:34:00Z. Presence alone does not establish a policy violation. [F-905ccc3fad097829]",
         "findings": [
           {
-            "id": "F-3fa9bf7bef88d249",
+            "id": "F-981a2bfd747d790e",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation on or before 2026-06-12T10:47:00Z.",
+            "text": "1 of 8 accessible devices match installed software named uTorrent, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 1,
               "scanned_devices": 8,
@@ -11821,12 +11840,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-ddf66340a68c136b",
+            "id": "F-905ccc3fad097829",
             "company_id": "globex-002",
             "device_id": "Q1AFVLH3YV33",
             "kind": "software",
             "text": "globex-macbook-4 (Q1AFVLH3YV33) has uTorrent 3.6 as of 2026-06-12T08:34:00Z. Presence alone does not establish a policy violation.",
             "values": {
+              "hostname": "globex-macbook-4",
               "software": [
                 {
                   "name": "uTorrent",
@@ -11857,7 +11877,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-1ef045cb80c249ffaa2f7ae4c3b660b0",
+            "run_id": "R-93802fd5239d4d6d914ddfd7033e4348",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -11868,7 +11888,7 @@
             "ok": true
           },
           {
-            "run_id": "R-1ef045cb80c249ffaa2f7ae4c3b660b0",
+            "run_id": "R-93802fd5239d4d6d914ddfd7033e4348",
             "tool": "query_fleet",
             "arguments": {
               "kind": "software",
@@ -11885,12 +11905,12 @@
             "ok": true
           },
           {
-            "run_id": "R-1ef045cb80c249ffaa2f7ae4c3b660b0",
+            "run_id": "R-93802fd5239d4d6d914ddfd7033e4348",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-3fa9bf7bef88d249",
-                "F-ddf66340a68c136b"
+                "F-981a2bfd747d790e",
+                "F-905ccc3fad097829"
               ],
               "status": "answered",
               "reason": "none"
@@ -11905,7 +11925,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.015
+        "elapsed_seconds": 0.021
       }
     },
     {
@@ -11921,7 +11941,7 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-f5fd173586bd4f1f81a27cdece1018c5",
+        "run_id": "R-f2d9db72cb2a47ebaed34a4373eeb616",
         "company_id": "acme-001",
         "status": "refused",
         "answer": "This request is outside the authorized company scope.",
@@ -11948,7 +11968,7 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-8eb85ced1c854cbb888fe4a641fda43f",
+        "run_id": "R-19435042bb7a4e01b23ba4fa31847256",
         "company_id": "acme-001",
         "status": "insufficient_data",
         "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.",
@@ -11960,7 +11980,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-8eb85ced1c854cbb888fe4a641fda43f",
+            "run_id": "R-19435042bb7a4e01b23ba4fa31847256",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -11971,7 +11991,7 @@
             "ok": true
           },
           {
-            "run_id": "R-8eb85ced1c854cbb888fe4a641fda43f",
+            "run_id": "R-19435042bb7a4e01b23ba4fa31847256",
             "tool": "finish",
             "arguments": {
               "finding_ids": [],
@@ -11987,7 +12007,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.01
+        "elapsed_seconds": 0.021
       }
     },
     {
@@ -12003,7 +12023,7 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-b39a070cc48949ef8f6a4006076fbaca",
+        "run_id": "R-672fccfdb27945dcbb1d8c2e61372a17",
         "company_id": "globex-002",
         "status": "insufficient_data",
         "answer": "The supplied telemetry does not include the policy or compatibility information needed for that conclusion or action.",
@@ -12015,7 +12035,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-b39a070cc48949ef8f6a4006076fbaca",
+            "run_id": "R-672fccfdb27945dcbb1d8c2e61372a17",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -12026,7 +12046,7 @@
             "ok": true
           },
           {
-            "run_id": "R-b39a070cc48949ef8f6a4006076fbaca",
+            "run_id": "R-672fccfdb27945dcbb1d8c2e61372a17",
             "tool": "finish",
             "arguments": {
               "finding_ids": [],
@@ -12042,7 +12062,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.009
+        "elapsed_seconds": 0.018
       }
     },
     {
@@ -12061,17 +12081,17 @@
         "proposal_action": true
       },
       "response": {
-        "run_id": "R-904f8fdc18c14fb3ad171cfeece73077",
+        "run_id": "R-04c24e6c2116473795824d038cf37fd8",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:39:00Z. [F-b43cbddee0ac21be]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-660bd043ee99474d]\n\nProposal P-eeac6978961c17998586fdd7: open_remediation_ticket for MT7PJB7N5LRE \u2014 pending, simulation only; separate administrator approval required.",
+        "answer": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-8bc7b73e47f5bbbd]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-191f574a4c8d063b]\n\nProposal P-726bccc7c8e5f28e0cc3c33e: open_remediation_ticket for MT7PJB7N5LRE \u2014 pending, simulation only; separate administrator approval required.",
         "findings": [
           {
-            "id": "F-b43cbddee0ac21be",
+            "id": "F-8bc7b73e47f5bbbd",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:39:00Z.",
+            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 1,
               "scanned_devices": 1,
@@ -12107,12 +12127,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-660bd043ee99474d",
+            "id": "F-191f574a4c8d063b",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "low_disk",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-macbook-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -12142,10 +12163,10 @@
           {
             "action": "open_remediation_ticket",
             "company_id": "acme-001",
-            "created_at": "2026-11-20T15:05:37.265122+00:00",
+            "created_at": "2026-11-20T15:39:52.770697+00:00",
             "device_id": "MT7PJB7N5LRE",
             "employee_id": null,
-            "expires_at": "2026-11-21T15:05:37.265127+00:00",
+            "expires_at": "2026-11-21T15:39:52.770708+00:00",
             "findings": [
               {
                 "company_id": "acme-001",
@@ -12162,11 +12183,12 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-660bd043ee99474d",
+                "id": "F-191f574a4c8d063b",
                 "kind": "low_disk",
                 "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold",
                 "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
                 "values": {
+                  "hostname": "acme-macbook-4",
                   "threshold_percent": 10,
                   "volumes": [
                     {
@@ -12179,13 +12201,14 @@
                 }
               }
             ],
-            "id": "P-eeac6978961c17998586fdd7",
+            "hostname": "acme-macbook-4",
+            "id": "P-726bccc7c8e5f28e0cc3c33e",
             "justification": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "mode": "simulation",
-            "run_id": "R-904f8fdc18c14fb3ad171cfeece73077",
+            "run_id": "R-04c24e6c2116473795824d038cf37fd8",
             "scope": "Record a simulated action; no external delivery or system modification",
             "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-            "digest": "3a62fffd9358eda7ba02e23ba8104f21c28f3f20f30cf13e7bc1e6919eddcc2b",
+            "digest": "1f13ed68a939d0caaec22d344d7347cf7813d6a830b5d8e03f6dcd203c527cfd",
             "status": "pending",
             "decided_by": null
           }
@@ -12196,7 +12219,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-904f8fdc18c14fb3ad171cfeece73077",
+            "run_id": "R-04c24e6c2116473795824d038cf37fd8",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -12207,7 +12230,7 @@
             "ok": true
           },
           {
-            "run_id": "R-904f8fdc18c14fb3ad171cfeece73077",
+            "run_id": "R-04c24e6c2116473795824d038cf37fd8",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -12224,24 +12247,24 @@
             "ok": true
           },
           {
-            "run_id": "R-904f8fdc18c14fb3ad171cfeece73077",
+            "run_id": "R-04c24e6c2116473795824d038cf37fd8",
             "tool": "propose_action",
             "arguments": {
               "action": "open_remediation_ticket",
               "device_id": "MT7PJB7N5LRE",
               "finding_ids": [
-                "F-660bd043ee99474d"
+                "F-191f574a4c8d063b"
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-904f8fdc18c14fb3ad171cfeece73077",
+            "run_id": "R-04c24e6c2116473795824d038cf37fd8",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-b43cbddee0ac21be",
-                "F-660bd043ee99474d"
+                "F-8bc7b73e47f5bbbd",
+                "F-191f574a4c8d063b"
               ],
               "status": "answered",
               "reason": "none"
@@ -12257,7 +12280,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.021
+        "elapsed_seconds": 0.03
       }
     },
     {
@@ -12275,17 +12298,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-3eba990eca474738a76b06354e88ded0",
+        "run_id": "R-456a05e0b3d748df8d06f80b079443ae",
         "company_id": "initech-003",
         "status": "answered",
-        "answer": "1 disk findings across 7 devices, observed from 2026-05-14T09:19:00Z to 2026-06-12T10:57:00Z. [F-bda5ef6eb66b297f]\n\ninitech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations. [F-8485c6aab3d2eea3]",
+        "answer": "1 volume persistently low on storage across 7 devices, observed 2026-05-14 to 2026-06-12. [F-fa5b6dcb211ddbfa]\n\ninitech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations. [F-a0d0cf8f69cbd3a4]",
         "findings": [
           {
-            "id": "F-bda5ef6eb66b297f",
+            "id": "F-fa5b6dcb211ddbfa",
             "company_id": "initech-003",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "1 disk findings across 7 devices, observed from 2026-05-14T09:19:00Z to 2026-06-12T10:57:00Z.",
+            "text": "1 volume persistently low on storage across 7 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 1,
               "devices": 7,
@@ -14614,12 +14637,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-8485c6aab3d2eea3",
+            "id": "F-a0d0cf8f69cbd3a4",
             "company_id": "initech-003",
             "device_id": "RLD7WV7J82SH",
             "kind": "persistent_disk",
             "text": "initech-mac-4 (RLD7WV7J82SH): / meets persistent disk utilization criteria: 30/30 days <10% (30 observed); mean 4.38%, first 7.49%, last 2.00%, from 2026-05-14T09:33:00Z to 2026-06-12T08:50:00Z. Policy assumption: at least 80% of days and 7 observations.",
             "values": {
+              "hostname": "initech-mac-4",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -14947,7 +14971,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-3eba990eca474738a76b06354e88ded0",
+            "run_id": "R-456a05e0b3d748df8d06f80b079443ae",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -14958,7 +14982,7 @@
             "ok": true
           },
           {
-            "run_id": "R-3eba990eca474738a76b06354e88ded0",
+            "run_id": "R-456a05e0b3d748df8d06f80b079443ae",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "disk",
@@ -14972,12 +14996,12 @@
             "ok": true
           },
           {
-            "run_id": "R-3eba990eca474738a76b06354e88ded0",
+            "run_id": "R-456a05e0b3d748df8d06f80b079443ae",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-bda5ef6eb66b297f",
-                "F-8485c6aab3d2eea3"
+                "F-fa5b6dcb211ddbfa",
+                "F-a0d0cf8f69cbd3a4"
               ],
               "status": "answered",
               "reason": "none"
@@ -14992,7 +15016,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.016
+        "elapsed_seconds": 0.03
       }
     },
     {
@@ -15010,17 +15034,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-b847434dc9b343a4b7d3eedd04a05ce3",
+        "run_id": "R-99b9452b14d043eb9d6e878ad3118200",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "3 battery_eol findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-d630df40338b34a9]\n\nacme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-1f10cce6ae644fa9]\n\nacme-thinkpad-8 (8NM23J95R5I6): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (21 of 30 observed days Service Recommended); full-charge capacity 4043 to 3872 (-4.2%, units unspecified) from 2026-05-14T10:10:00Z to 2026-06-12T09:02:00Z; cycle count 1157 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-2fd97f2ea7f5e215]\n\nacme-dell-9 (M4XVHUV1MEPZ): battery end-of-life risk, 2 of 3 signals. Latest condition Service Recommended (20 of 30 observed days Service Recommended); full-charge capacity 3406 to 3262 (-4.2%, units unspecified) from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z; cycle count 948 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-5af622e0bebc96f5]",
+        "answer": "3 devices at battery end-of-life risk across 10 devices, observed 2026-05-14 to 2026-06-12. [F-ceced497d59cf7f5]\n\nacme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-e38d1a875cb27b47]\n\nacme-thinkpad-8 (8NM23J95R5I6): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (21 of 30 observed days Service Recommended); full-charge capacity 4043 to 3872 (-4.2%, units unspecified) from 2026-05-14T10:10:00Z to 2026-06-12T09:02:00Z; cycle count 1157 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-b1ee824df2323649]\n\nacme-dell-9 (M4XVHUV1MEPZ): battery end-of-life risk, 2 of 3 signals. Latest condition Service Recommended (20 of 30 observed days Service Recommended); full-charge capacity 3406 to 3262 (-4.2%, units unspecified) from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z; cycle count 948 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction. [F-dfac3f5a69ddf836]",
         "findings": [
           {
-            "id": "F-d630df40338b34a9",
+            "id": "F-ceced497d59cf7f5",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "3 battery_eol findings across 10 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "3 devices at battery end-of-life risk across 10 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 3,
               "devices": 10,
@@ -18339,12 +18363,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-1f10cce6ae644fa9",
+            "id": "F-e38d1a875cb27b47",
             "company_id": "acme-001",
             "device_id": "7VP16KHV88LM",
             "kind": "battery_eol_risk",
             "text": "acme-macbook-1 (7VP16KHV88LM): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (14 of 30 observed days Service Recommended); full-charge capacity 4348 to 4166 (-4.2%, units unspecified) from 2026-05-14T11:09:00Z to 2026-06-12T10:41:00Z; cycle count 1049 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
             "values": {
+              "hostname": "acme-macbook-1",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -18408,12 +18433,13 @@
             "method": "At least 2 of: latest condition Service Recommended; full-charge capacity decline >= 2% first-to-last; latest cycle count >= 1000"
           },
           {
-            "id": "F-2fd97f2ea7f5e215",
+            "id": "F-b1ee824df2323649",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "battery_eol_risk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6): battery end-of-life risk, 3 of 3 signals. Latest condition Service Recommended (21 of 30 observed days Service Recommended); full-charge capacity 4043 to 3872 (-4.2%, units unspecified) from 2026-05-14T10:10:00Z to 2026-06-12T09:02:00Z; cycle count 1157 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -18477,12 +18503,13 @@
             "method": "At least 2 of: latest condition Service Recommended; full-charge capacity decline >= 2% first-to-last; latest cycle count >= 1000"
           },
           {
-            "id": "F-5af622e0bebc96f5",
+            "id": "F-dfac3f5a69ddf836",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "battery_eol_risk",
             "text": "acme-dell-9 (M4XVHUV1MEPZ): battery end-of-life risk, 2 of 3 signals. Latest condition Service Recommended (20 of 30 observed days Service Recommended); full-charge capacity 3406 to 3262 (-4.2%, units unspecified) from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z; cycle count 948 (policy reference 1000). This prioritizes service review; it is not a remaining-life prediction.",
             "values": {
+              "hostname": "acme-dell-9",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -18553,7 +18580,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-b847434dc9b343a4b7d3eedd04a05ce3",
+            "run_id": "R-99b9452b14d043eb9d6e878ad3118200",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -18564,7 +18591,7 @@
             "ok": true
           },
           {
-            "run_id": "R-b847434dc9b343a4b7d3eedd04a05ce3",
+            "run_id": "R-99b9452b14d043eb9d6e878ad3118200",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "battery_eol",
@@ -18578,14 +18605,14 @@
             "ok": true
           },
           {
-            "run_id": "R-b847434dc9b343a4b7d3eedd04a05ce3",
+            "run_id": "R-99b9452b14d043eb9d6e878ad3118200",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-d630df40338b34a9",
-                "F-1f10cce6ae644fa9",
-                "F-2fd97f2ea7f5e215",
-                "F-5af622e0bebc96f5"
+                "F-ceced497d59cf7f5",
+                "F-e38d1a875cb27b47",
+                "F-b1ee824df2323649",
+                "F-dfac3f5a69ddf836"
               ],
               "status": "answered",
               "reason": "none"
@@ -18600,7 +18627,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.018
+        "elapsed_seconds": 0.024
       }
     },
     {
@@ -18618,17 +18645,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-e6756efcf52b4201baba4ca7ca90f970",
+        "run_id": "R-ddb42fd5999b40dd99f026629db7cdcb",
         "company_id": "globex-002",
         "status": "answered",
-        "answer": "0 battery_eol findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z. [F-8788be5b3dd6ac9b]",
+        "answer": "0 devices at battery end-of-life risk across 8 devices, observed 2026-05-14 to 2026-06-12. [F-8e95a5474b8837be]",
         "findings": [
           {
-            "id": "F-8788be5b3dd6ac9b",
+            "id": "F-8e95a5474b8837be",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "0 battery_eol findings across 8 devices, observed from 2026-05-14T09:22:00Z to 2026-06-12T10:47:00Z.",
+            "text": "0 devices at battery end-of-life risk across 8 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 0,
               "devices": 8,
@@ -21294,7 +21321,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-e6756efcf52b4201baba4ca7ca90f970",
+            "run_id": "R-ddb42fd5999b40dd99f026629db7cdcb",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -21305,7 +21332,7 @@
             "ok": true
           },
           {
-            "run_id": "R-e6756efcf52b4201baba4ca7ca90f970",
+            "run_id": "R-ddb42fd5999b40dd99f026629db7cdcb",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "battery_eol",
@@ -21319,11 +21346,11 @@
             "ok": true
           },
           {
-            "run_id": "R-e6756efcf52b4201baba4ca7ca90f970",
+            "run_id": "R-ddb42fd5999b40dd99f026629db7cdcb",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-8788be5b3dd6ac9b"
+                "F-8e95a5474b8837be"
               ],
               "status": "answered",
               "reason": "none"
@@ -21338,7 +21365,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.046
+        "elapsed_seconds": 0.09
       }
     },
     {
@@ -21357,17 +21384,17 @@
         "proposal_action": true
       },
       "response": {
-        "run_id": "R-dbadd75ea5f44cf5a0ae9d5954e9b343",
+        "run_id": "R-fe767bdc202747b59a2441c2a9a8e46a",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T09:02:00Z. [F-b199636a3c7959f6]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-f6236801f462dd5f]\n\nProposal P-95629a5af6609a9c82d57b43: notify_employee for 8NM23J95R5I6 \u2014 pending, simulation only; separate administrator approval required.",
+        "answer": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-344700fbea113cdc]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-08f015edceb4bf98]\n\nProposal P-4deeb2706381ac626240f193: notify_employee for 8NM23J95R5I6 \u2014 pending, simulation only; separate administrator approval required.",
         "findings": [
           {
-            "id": "F-b199636a3c7959f6",
+            "id": "F-344700fbea113cdc",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T09:02:00Z.",
+            "text": "1 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 1,
               "scanned_devices": 1,
@@ -21403,12 +21430,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-f6236801f462dd5f",
+            "id": "F-08f015edceb4bf98",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "low_disk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -21438,10 +21466,10 @@
           {
             "action": "notify_employee",
             "company_id": "acme-001",
-            "created_at": "2026-11-20T15:05:37.373239+00:00",
+            "created_at": "2026-11-20T15:39:52.981579+00:00",
             "device_id": "8NM23J95R5I6",
             "employee_id": "emp-acme-1005",
-            "expires_at": "2026-11-21T15:05:37.373243+00:00",
+            "expires_at": "2026-11-21T15:39:52.981591+00:00",
             "findings": [
               {
                 "company_id": "acme-001",
@@ -21458,11 +21486,12 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-f6236801f462dd5f",
+                "id": "F-08f015edceb4bf98",
                 "kind": "low_disk",
                 "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold",
                 "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
                 "values": {
+                  "hostname": "acme-thinkpad-8",
                   "threshold_percent": 10,
                   "volumes": [
                     {
@@ -21475,13 +21504,14 @@
                 }
               }
             ],
-            "id": "P-95629a5af6609a9c82d57b43",
+            "hostname": "acme-thinkpad-8",
+            "id": "P-4deeb2706381ac626240f193",
             "justification": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "mode": "simulation",
-            "run_id": "R-dbadd75ea5f44cf5a0ae9d5954e9b343",
+            "run_id": "R-fe767bdc202747b59a2441c2a9a8e46a",
             "scope": "Record a simulated action; no external delivery or system modification",
             "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-            "digest": "bd82ef86dabc8c1b19d460d16e2832873375d35e8a924f17ff1ec69f14f43311",
+            "digest": "542c5d10641087b7cbf3aa951fa0d32862fe30c56d409d95babef6a3e5466803",
             "status": "pending",
             "decided_by": null
           }
@@ -21492,7 +21522,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-dbadd75ea5f44cf5a0ae9d5954e9b343",
+            "run_id": "R-fe767bdc202747b59a2441c2a9a8e46a",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -21503,7 +21533,7 @@
             "ok": true
           },
           {
-            "run_id": "R-dbadd75ea5f44cf5a0ae9d5954e9b343",
+            "run_id": "R-fe767bdc202747b59a2441c2a9a8e46a",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -21520,24 +21550,24 @@
             "ok": true
           },
           {
-            "run_id": "R-dbadd75ea5f44cf5a0ae9d5954e9b343",
+            "run_id": "R-fe767bdc202747b59a2441c2a9a8e46a",
             "tool": "propose_action",
             "arguments": {
               "action": "notify_employee",
               "device_id": "8NM23J95R5I6",
               "finding_ids": [
-                "F-f6236801f462dd5f"
+                "F-08f015edceb4bf98"
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-dbadd75ea5f44cf5a0ae9d5954e9b343",
+            "run_id": "R-fe767bdc202747b59a2441c2a9a8e46a",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-b199636a3c7959f6",
-                "F-f6236801f462dd5f"
+                "F-344700fbea113cdc",
+                "F-08f015edceb4bf98"
               ],
               "status": "answered",
               "reason": "none"
@@ -21553,7 +21583,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.02
+        "elapsed_seconds": 0.056
       }
     },
     {
@@ -21572,17 +21602,17 @@
         "proposal_action": true
       },
       "response": {
-        "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+        "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "1 ram findings across 1 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. [F-861d6f132c04a44b]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-74fb72226aade610]\n\n1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 0 devices have no battery reading in their latest snapshot; missing is not healthy. [F-79655e4e6f66c876]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-da76e805d39c9403]\n\nProposal P-dca002ff732972734e4bc5f3: flag_device_for_replacement for M4XVHUV1MEPZ \u2014 pending, simulation only; separate administrator approval required.",
+        "answer": "1 device with persistent RAM use above the threshold across 1 devices, observed 2026-05-14 to 2026-06-12. [F-a1bbae4a8d521249]\n\nacme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations. [F-c222174222d148d8]\n\n1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 0 devices have no battery reading in their latest snapshot; missing is not healthy. [F-17d0503795b763d3]\n\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields. [F-d4fb49cf76d3b275]\n\nProposal P-48aafc7f182cb50371cf4062: flag_device_for_replacement for M4XVHUV1MEPZ \u2014 pending, simulation only; separate administrator approval required.",
         "findings": [
           {
-            "id": "F-861d6f132c04a44b",
+            "id": "F-a1bbae4a8d521249",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "trend_summary",
-            "text": "1 ram findings across 1 devices, observed from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z.",
+            "text": "1 device with persistent RAM use above the threshold across 1 devices, observed 2026-05-14 to 2026-06-12.",
             "values": {
               "finding_count": 1,
               "devices": 1,
@@ -21931,12 +21961,13 @@
             "method": "Tenant-scoped window; see individual findings for calculations"
           },
           {
-            "id": "F-74fb72226aade610",
+            "id": "F-c222174222d148d8",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "persistent_ram",
             "text": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.",
             "values": {
+              "hostname": "acme-dell-9",
               "observed_days": 30,
               "span_days": 30,
               "window_start": "2026-05-14",
@@ -22257,11 +22288,11 @@
             "method": "Last observation per UTC day; missing days count against persistence; compare explicit thresholds"
           },
           {
-            "id": "F-79655e4e6f66c876",
+            "id": "F-17d0503795b763d3",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation on or before 2026-06-12T11:00:00Z. 0 devices have no battery reading in their latest snapshot; missing is not healthy.",
+            "text": "1 of 1 accessible devices match reported battery service recommendation, using each device's latest observation up to 2026-06-12. 0 devices have no battery reading in their latest snapshot; missing is not healthy.",
             "values": {
               "count": 1,
               "scanned_devices": 1,
@@ -22297,12 +22328,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-da76e805d39c9403",
+            "id": "F-d4fb49cf76d3b275",
             "company_id": "acme-001",
             "device_id": "M4XVHUV1MEPZ",
             "kind": "battery_service",
             "text": "acme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "values": {
+              "hostname": "acme-dell-9",
               "condition": "Service Recommended",
               "full_charge_capacity": 3262
             },
@@ -22325,10 +22357,10 @@
           {
             "action": "flag_device_for_replacement",
             "company_id": "acme-001",
-            "created_at": "2026-11-20T15:05:37.397924+00:00",
+            "created_at": "2026-11-20T15:39:53.038479+00:00",
             "device_id": "M4XVHUV1MEPZ",
             "employee_id": null,
-            "expires_at": "2026-11-21T15:05:37.397932+00:00",
+            "expires_at": "2026-11-21T15:39:53.038490+00:00",
             "findings": [
               {
                 "company_id": "acme-001",
@@ -22635,7 +22667,7 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-74fb72226aade610",
+                "id": "F-c222174222d148d8",
                 "kind": "persistent_ram",
                 "method": "Last observation per UTC day; missing days count against persistence; compare explicit thresholds",
                 "text": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.",
@@ -22645,6 +22677,7 @@
                   "first_percent": 90.938200551318,
                   "fraction": 0.8,
                   "hits": 30,
+                  "hostname": "acme-dell-9",
                   "last_percent": 98.99999999906868,
                   "mean_percent": 94.19311240684085,
                   "min_observations": 7,
@@ -22671,23 +22704,25 @@
                     "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de"
                   }
                 ],
-                "id": "F-da76e805d39c9403",
+                "id": "F-d4fb49cf76d3b275",
                 "kind": "battery_service",
                 "method": "latest snapshot per device",
                 "text": "acme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
                 "values": {
                   "condition": "Service Recommended",
-                  "full_charge_capacity": 3262
+                  "full_charge_capacity": 3262,
+                  "hostname": "acme-dell-9"
                 }
               }
             ],
-            "id": "P-dca002ff732972734e4bc5f3",
+            "hostname": "acme-dell-9",
+            "id": "P-48aafc7f182cb50371cf4062",
             "justification": "acme-dell-9 (M4XVHUV1MEPZ): RAM meets persistent ram utilization criteria: 30/30 days >85% (30 observed); mean 94.19%, first 90.94%, last 99.00%, from 2026-05-14T08:40:00Z to 2026-06-12T11:00:00Z. Policy assumption: at least 80% of days and 7 observations.\nacme-dell-9 (M4XVHUV1MEPZ) reports battery condition Service Recommended as of 2026-06-12T11:00:00Z. Battery health percentage and remaining life cannot be calculated from the supplied fields.",
             "mode": "simulation",
-            "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+            "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
             "scope": "Flag for assessment only; no replacement or purchase",
             "source_sha256": "fb0ee31ffeeb731b919fc4d5124098c9c5b68cf3fba35eed5092a9f73655c4de",
-            "digest": "a1c57c372b3970c964c8ae8829d7ea5fe3100d06219269d22f76aad8f9b0b5d6",
+            "digest": "6d47932acde269dbc62f72e25f72494beb96b55ed6d60249d8971d3568013f6a",
             "status": "pending",
             "decided_by": null
           }
@@ -22698,7 +22733,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+            "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -22709,7 +22744,7 @@
             "ok": true
           },
           {
-            "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+            "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
             "tool": "analyze_trends",
             "arguments": {
               "kind": "ram",
@@ -22723,7 +22758,7 @@
             "ok": true
           },
           {
-            "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+            "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
             "tool": "query_fleet",
             "arguments": {
               "kind": "battery_service",
@@ -22740,27 +22775,27 @@
             "ok": true
           },
           {
-            "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+            "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
             "tool": "propose_action",
             "arguments": {
               "action": "flag_device_for_replacement",
               "device_id": "M4XVHUV1MEPZ",
               "finding_ids": [
-                "F-74fb72226aade610",
-                "F-da76e805d39c9403"
+                "F-c222174222d148d8",
+                "F-d4fb49cf76d3b275"
               ]
             },
             "ok": true
           },
           {
-            "run_id": "R-5efa9c77b201494aa434e2292e3cc269",
+            "run_id": "R-2be65a6f35b44d8fb491f1e6ceb05070",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-861d6f132c04a44b",
-                "F-74fb72226aade610",
-                "F-79655e4e6f66c876",
-                "F-da76e805d39c9403"
+                "F-a1bbae4a8d521249",
+                "F-c222174222d148d8",
+                "F-17d0503795b763d3",
+                "F-d4fb49cf76d3b275"
               ],
               "status": "answered",
               "reason": "none"
@@ -22777,7 +22812,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.023
+        "elapsed_seconds": 0.051
       }
     },
     {
@@ -22793,17 +22828,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-213ac9f9099e4ba597be41784ef4dc8b",
+        "run_id": "R-b04fb8a86fcb4e27b1d1425d240fc470",
         "company_id": "globex-002",
         "status": "insufficient_data",
-        "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.\n\n0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:47:00Z. [F-337b816a5a67597f]",
+        "answer": "There is insufficient telemetry evidence to support the requested conclusion or action.\n\n0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-0c777ea0460861be]",
         "findings": [
           {
-            "id": "F-337b816a5a67597f",
+            "id": "F-0c777ea0460861be",
             "company_id": "globex-002",
             "device_id": null,
             "kind": "query_summary",
-            "text": "0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T08:47:00Z.",
+            "text": "0 of 1 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 0,
               "scanned_devices": 1,
@@ -22846,7 +22881,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-213ac9f9099e4ba597be41784ef4dc8b",
+            "run_id": "R-b04fb8a86fcb4e27b1d1425d240fc470",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -22857,7 +22892,7 @@
             "ok": true
           },
           {
-            "run_id": "R-213ac9f9099e4ba597be41784ef4dc8b",
+            "run_id": "R-b04fb8a86fcb4e27b1d1425d240fc470",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -22874,17 +22909,17 @@
             "ok": true
           },
           {
-            "run_id": "R-213ac9f9099e4ba597be41784ef4dc8b",
+            "run_id": "R-b04fb8a86fcb4e27b1d1425d240fc470",
             "tool": "propose_action",
             "ok": false,
             "error": "insufficient_evidence"
           },
           {
-            "run_id": "R-213ac9f9099e4ba597be41784ef4dc8b",
+            "run_id": "R-b04fb8a86fcb4e27b1d1425d240fc470",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-337b816a5a67597f"
+                "F-0c777ea0460861be"
               ],
               "status": "insufficient_data",
               "reason": "insufficient_evidence"
@@ -22900,7 +22935,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.019
+        "elapsed_seconds": 0.047
       }
     },
     {
@@ -22918,17 +22953,17 @@
         "proposal_count": true
       },
       "response": {
-        "run_id": "R-0325b51b3c4e44da919f9cfee33e75f5",
+        "run_id": "R-da1f4fbd187148d285f5ce616a488224",
         "company_id": "acme-001",
         "status": "answered",
-        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z. [F-6ae68797434e3e27]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-f6236801f462dd5f]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-660bd043ee99474d]",
+        "answer": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12. [F-a425018065877fae]\n\nacme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free. [F-08f015edceb4bf98]\n\nacme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free. [F-191f574a4c8d063b]",
         "findings": [
           {
-            "id": "F-6ae68797434e3e27",
+            "id": "F-a425018065877fae",
             "company_id": "acme-001",
             "device_id": null,
             "kind": "query_summary",
-            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation on or before 2026-06-12T11:00:00Z.",
+            "text": "2 of 10 accessible devices match disk space strictly below 10% available, using each device's latest observation up to 2026-06-12.",
             "values": {
               "count": 2,
               "scanned_devices": 10,
@@ -23072,12 +23107,13 @@
             "method": "Filter latest snapshot per tenant/device; count unique matching devices"
           },
           {
-            "id": "F-f6236801f462dd5f",
+            "id": "F-08f015edceb4bf98",
             "company_id": "acme-001",
             "device_id": "8NM23J95R5I6",
             "kind": "low_disk",
             "text": "acme-thinkpad-8 (8NM23J95R5I6) has low disk space (C:\\: 2.59% free) as of 2026-06-12T09:02:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-thinkpad-8",
               "volumes": [
                 {
                   "mount_point": "C:\\",
@@ -23103,12 +23139,13 @@
             "method": "100 * available_bytes / size_bytes, per volume; any volume below threshold"
           },
           {
-            "id": "F-660bd043ee99474d",
+            "id": "F-191f574a4c8d063b",
             "company_id": "acme-001",
             "device_id": "MT7PJB7N5LRE",
             "kind": "low_disk",
             "text": "acme-macbook-4 (MT7PJB7N5LRE) has low disk space (/: 2.00% free) as of 2026-06-12T08:39:00Z; threshold is <10% free.",
             "values": {
+              "hostname": "acme-macbook-4",
               "volumes": [
                 {
                   "mount_point": "/",
@@ -23141,7 +23178,7 @@
         ],
         "trace": [
           {
-            "run_id": "R-0325b51b3c4e44da919f9cfee33e75f5",
+            "run_id": "R-da1f4fbd187148d285f5ce616a488224",
             "tool": "make_plan",
             "arguments": {
               "steps": [
@@ -23152,7 +23189,7 @@
             "ok": true
           },
           {
-            "run_id": "R-0325b51b3c4e44da919f9cfee33e75f5",
+            "run_id": "R-da1f4fbd187148d285f5ce616a488224",
             "tool": "query_fleet",
             "arguments": {
               "kind": "low_disk",
@@ -23169,13 +23206,13 @@
             "ok": true
           },
           {
-            "run_id": "R-0325b51b3c4e44da919f9cfee33e75f5",
+            "run_id": "R-da1f4fbd187148d285f5ce616a488224",
             "tool": "finish",
             "arguments": {
               "finding_ids": [
-                "F-6ae68797434e3e27",
-                "F-f6236801f462dd5f",
-                "F-660bd043ee99474d"
+                "F-a425018065877fae",
+                "F-08f015edceb4bf98",
+                "F-191f574a4c8d063b"
               ],
               "status": "answered",
               "reason": "none"
@@ -23190,7 +23227,7 @@
           {},
           {}
         ],
-        "elapsed_seconds": 0.016
+        "elapsed_seconds": 0.022
       }
     }
   ]

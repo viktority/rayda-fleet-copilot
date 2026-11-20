@@ -98,6 +98,8 @@ The launcher starts the API and frontend together and opens a browser tab that i
 
 Restarting the launcher creates a new credential, and a normal shutdown deletes the access file. **Disconnect** clears the stored credential and everything shown on the page. `--no-open` starts the server without opening a browser. `fleet serve` serves the same interface at `/` for configured tokens.
 
+Each answer shows a status badge (Answered, Refused, Insufficient data, and so on). Each device finding shows the hostname, a few key values as chips, and the exact server-written sentence with its evidence. **Agent steps** is open by default: it lists the plan, then each tool call with its arguments and a ✓ or ✗. A rejected call is shown with its error code, which was returned to the model as an observation. The chips only restate values the server computed; they never add facts of their own.
+
 The interface handles loading, empty results, errors, expired proposals and narrow mobile screens. Evidence and other data-derived strings are always rendered as text, never as HTML. Screenshots: [desktop](screenshots/desktop.jpg), [mobile](screenshots/mobile.jpg), [mobile action review](screenshots/mobile-action-review.jpg).
 
 ### CLI
